@@ -45,6 +45,7 @@ socket.on('agge', rawData => {
         console.log('got "requestPlayer"', data)
         let player = players[clientId]
         socket.emit('agge', JSON.stringify({
+            command: 'responsePlayer',
             x: player.rect.x,
             y: player.rect.y,
             w: player.rect.w,
