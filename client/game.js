@@ -17,6 +17,10 @@ socket.on('agge', rawData => {
     else if(data.command === 'movePlayer'){
         console.log('got "movePlayer"', data)
         let player = players[data.clientId]
+        if(!player){
+            console.log(`Could not find any player with ID: ${data.clientId}`)
+            return
+        }
         
         player.rect.x = data.x
         player.rect.y = data.y

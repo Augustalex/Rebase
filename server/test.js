@@ -24,10 +24,10 @@ function genClientId() {
     return clientId.toString()
 }
 function broadcast(clientId, message) {
-    console.log(`broadcast(${clientId}, ${message})`)
+    console.log(`broadcast(${clientId}, ${JSON.stringify(message)})`)
     for(let otherClientId in clients) {
         if(clientId !== otherClientId) {
-            console.log(`sending to ${clientId} with data ${message}`)
+            console.log(`sending to ${clientId} with data ${JSON.stringify(message)}`)
             const client = clients[otherClientId]
             client.socket.emit("agge", JSON.stringify(message))
         }
@@ -84,7 +84,7 @@ io.on('connection', (socket) => {
                 broadcastCreatePlayerData(data.clientId, data)
                 break
         }
-        console.log(`done broadcasting command: "${data.command} with data ${rawData}"`)
+        // console.log(`done broadcasting command: "${data.command} with data ${rawData}"`)
     })
     socket.emit("agge", JSON.stringify({
         command: "handshake",
