@@ -14,7 +14,7 @@ let colors = [
 
 io.on('connection', (socket) => {
     clients.add(socket)
-    if(clients.includes(socket)) return
+    if(clients.has(socket)) return
     let color = colors.pop()
     colors.unshift(color)
     socket.on('agge', data => {
