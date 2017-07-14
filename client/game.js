@@ -80,6 +80,7 @@ window.onkeydown = function (event) {
         x: player.rect.x,
         y: player.rect.y
     }))
+    console.log('movedPlayer')
     if (key === 'CTRL_C') {
         process.exit()
     }
