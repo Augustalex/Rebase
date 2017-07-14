@@ -1,9 +1,7 @@
-/**
- * Created by august-play on 2017-07-07.
- */
-
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext('2d')
+
+let socket = io('http://192.168.1.19:8081')
 
 let dudad = {
     rect: {
@@ -11,7 +9,8 @@ let dudad = {
         y: 10,
         w: 5,
         h: 5
-    }
+    },
+    speed: 5
 }
 
 window.onkeydown = function (event) {
@@ -32,72 +31,37 @@ window.onkeydown = function (event) {
         default:
             console.log(key);
     }
+    socket.emit('agge', JSON.stringify(dudad.rect))
     if (key === 'CTRL_C') {
         process.exit()
     }
 }
 
+let orders = []
+
+socket.on('agge', data => {
+    orders.push(JSON.parse(data))
+})
+
 function run(state, lastRun) {
     let now = Date.now() / 1000
     let delta = now - lastRun
 
-    if(state.getDudad().score < 0){
-        gameOver()
-        return
-    }
-
     setColor(0,0,0)
-    clear()
+    // clear()
 
-    let drawables = state.getDrawablesByColor()
-    Object.keys(drawables).forEach(colorKey => {
-        if (drawables[colorKey].length < 1) return
-        let color = drawables[colorKey][0].color
-        setColor(color)
-        drawables[colorKey].forEach(drawable => {
-            let rect = drawable.rect;
-            ctx.fillRect(rect.x * scale, rect.y * scale, Math.round(rect.w * scale), Math.round(rect.h * scale))
-        })
-    })
-
-    let world = state.getWorld()
     ctx.font = '15px Arial'
-    ctx.fillText(`Score: ${Math.floor(state.getDudad().score)}\tPopulation: ${world.population()}`, 10, 10);
-    if(state.getUser().mouse){
-        let mouseEvent = state.getUser().mouse
-        let mousePos = { x: mouseEvent.offsetX, y: mouseEvent.offsetY }
-        ctx.fillText(`Mouse position - x:${mousePos.x} y:${mousePos.y}`, 10, 35);
-    }
+    ctx.fillText('Holy moly', 10, 10);
 
-    let populationByHouse = world.populationByHouse();
-    let y = 50
-    for(let houseName of Object.keys(populationByHouse)){
-        ctx.fillText(`${houseName}: ${populationByHouse[houseName]}`, 10, y);
-        y += 20
-    }
-
-    state.getPopups().forEach(p => {
-        setColor(p.bgColor)
-        let bounds = p.getBounds()
-        ctx.fillRect(bounds.x, bounds.y, bounds.w, bounds.h)
-        setColor(p.textColor)
-        ctx.fillText(p.text, bounds.x + 7, bounds.y + 17)
-    })
-
-    if(state.isPaused()){
-        ctx.font = '20px Comic Sans MS'
-        setColor(255,0,0)
-        ctx.fillText('PAUSED', 800, 100)
-    }
-    let newState = Logic(state, delta)
-
-    requestAnimationFrame(() => run(newState, now))
-}
-
-function gameOver() {
-    ctx.font = '50px Comic Sans MS'
     setColor(255,0,0)
-    ctx.fillText('GAME OVER', 450, 500)
+    ctx.fillRect(dudad.rect.x, dudad.rect.y, dudad.rect.w, dudad.rect.h)
+
+    orders.forEach(o => {
+        ctx.fillRect(o.x, o.y, o.w, o.h)
+    })
+    orders = []
+
+    requestAnimationFrame(() => run(state, now))
 }
 
 function setColor({ r, g, b }){
@@ -116,4 +80,4 @@ function inBox(point, rect) {
     return inSpan(point.x, rect.x, rect.x + rect.w) && inSpan(point.y, rect.y, rect.y + rect.h)
 }
 
-requestAnimationFrame(() => run(state, Date.now() / 1000))
+requestAnimationFrame(() => run({}, Date.now() / 1000))

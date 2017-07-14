@@ -5,6 +5,7 @@ var io = require('socket.io')(http)
 app.set('port', 8080);
 
 io.on('connection', (socket) => {
+    console.log(socket);
     socket.on('agge', data => {
         console.log(`Got data on channel "agge": ${data}`);
     })
