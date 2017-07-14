@@ -24,7 +24,7 @@ function genClientId() {
     return clientId.toString()
 }
 function broadcast(clientId, message) {
-    for(var otherClientId in client) {
+    for(var otherClientId in clients) {
         if(clientId !== otherClientId) {
             const client = clients[otherClientId]
             client.socket.emit("agge", JSON.stringify(message))
@@ -48,14 +48,14 @@ function broadcastCreatePlayerData(clientId, data) {
     broadcast(null, data)
 }
 function broadcastCreatePlayer(clientId) {
-    broadcastCreatePlayerData({
+    broadcastCreatePlayerData(clientId, {
         clientId: clientId,
         w: 10,
         h: 10,
         x: genPosPart(),
         y: genPosPart(),
         speed: 5,
-        color: genColor,
+        color: genColor(),
     })
 }
 function broadcastRequestPlayer(clientId) {
@@ -76,7 +76,6 @@ io.on('connection', (socket) => {
             case "move":
                 broadcastMove(clientId, data)
                 break
-
             case 'responsePlayer':
                 broadcastCreatePlayerData(data.clientId, data)
                 break
@@ -86,8 +85,9 @@ io.on('connection', (socket) => {
         command: "handshake",
         clientId: clientId,
     }))
+    console.log('sent command handshake')
     broadcastCreatePlayer(clientId)
-    broadcaseRequestPlayer(clientId)
+    broadcastRequestPlayer(clientId)
     console.log(`a user connected: ${socket.handshake.address} that was given this id: ${clientId}`);
 })
 

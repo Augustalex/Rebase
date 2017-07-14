@@ -11,15 +11,18 @@ socket.on('agge', rawData => {
     let data = JSON.parse(rawData)
     
     if(data.command === 'handshake'){
+        console.log('got "handshake"', data)
         clientId = data.clientId
     }
     else if(data.command === 'movePlayer'){
+        console.log('got "movePlayer"', data)
         let player = players[data.clientId]
         
         player.rect.x = data.x
         player.rect.y = data.y
     }
     else if(data.command === 'createPlayer'){
+        console.log('got "createPlayer"', data)
         if(!!players[data.clientId]) return
         
         players[data.clientId] = {
@@ -35,6 +38,7 @@ socket.on('agge', rawData => {
         }
     }
     else if(data.command === 'requestPlayer'){
+        console.log('got "requestPlayer"', data)
         let player = players[clientId]
         socket.emit('agge', JSON.stringify({
             x: player.rect.x,
@@ -51,6 +55,10 @@ socket.on('agge', rawData => {
 window.onkeydown = function (event) {
     let key = String.fromCharCode(event.keyCode).toLowerCase()
     let player = players[clientId]
+    if(!player) {
+        console.log('Player not defined.')
+        return
+    }
     switch (key) {
         case "w":
             player.rect.y -= player.speed
@@ -95,6 +103,7 @@ function run(state, lastRun) {
             g: color[1],
             b: color[2]
         })
+        console.log(`Player ${player.clientId}: rect${JSON.stringify(rect)}`)
         ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
     })
 
