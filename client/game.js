@@ -3,67 +3,93 @@ let ctx = canvas.getContext('2d')
 
 let socket = io('http://192.168.1.19:8081')
 
-let dudad = {
-    rect: {
-        x: 10,
-        y: 10,
-        w: 5,
-        h: 5
-    },
-    speed: 5
-}
+
+let players = []
+let clientId
+
+socket.on('agge', rawData => {
+    let data = JSON.parse(rawData)
+    
+    if(data.command === 'handshake'){
+        clientId = data.clientId
+    }
+    else if(data.command === 'movePlayer'){
+        let player = players[data.clientId]
+        
+        player.rect.x = data.x
+        player.rect.y = data.y
+    }
+    else if(data.command === 'createPlayer'){
+        if(!!players[data.clientId]) return
+        
+        players[data.clientId] = {
+            rect: {
+                x: data.x,
+                y: data.y,
+                w: data.w,
+                h: data.h
+            },
+            speed: data.speed,
+            color: data.color,
+            clientId: data.clientId
+        }
+    }
+    else if(data.command === 'requestPlayer'){
+        let player = players[clientId]
+        socket.emit('agge', JSON.stringify({
+            x: player.rect.x,
+            y: player.rect.y,
+            w: player.rect.w,
+            h: player.rect.h,
+            speed: player.speed,
+            color: player.color,
+            clientId: player.clientId
+        }))
+    }
+})
 
 window.onkeydown = function (event) {
     let key = String.fromCharCode(event.keyCode).toLowerCase()
+    let player = players[clientId]
     switch (key) {
         case "w":
-            dudad.rect.y -= dudad.speed
+            player.rect.y -= player.speed
             break
         case "a":
-            dudad.rect.x -= dudad.speed
+            player.rect.x -= player.speed
             break
         case "s":
-            dudad.rect.y += dudad.speed
+            player.rect.y += player.speed
             break
         case "d":
-            dudad.rect.x += dudad.speed
+            player.rect.x += player.speed
             break
         default:
             console.log(key);
     }
-    socket.emit('agge', JSON.stringify(dudad.rect))
+    socket.emit('agge', JSON.stringify({
+        command: 'movePlayer',
+        x: player.rect.x,
+        y: player.rect.y
+    }))
     if (key === 'CTRL_C') {
         process.exit()
     }
 }
-
-let orders = []
-
-socket.on('agge', data => {
-    orders.push(JSON.parse(data))
-})
 
 function run(state, lastRun) {
     let now = Date.now() / 1000
     let delta = now - lastRun
 
     setColor(0,0,0)
-    // clear()
+    clear()
 
     ctx.font = '15px Arial'
     ctx.fillText('Holy moly', 10, 10);
-    //
-    // setColor({
-    //     r: 255,
-    //     g: 0,
-    //     b: 0
-    // })
-    // ctx.fillRect(dudad.rect.x, dudad.rect.y, dudad.rect.w, dudad.rect.h)
-    //
-    orders.forEach(o => {
-        let rect = o.rect
-        let color = o.color
-        console.log('order', JSON.stringify(o))
+    
+    players.forEach(player => {
+        let rect = player.rect
+        let color = player.color
         setColor({
             r: color[0],
             g: color[1],
@@ -71,7 +97,6 @@ function run(state, lastRun) {
         })
         ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
     })
-    orders = []
 
     requestAnimationFrame(() => run(state, now))
 }
