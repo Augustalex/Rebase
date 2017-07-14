@@ -17,15 +17,16 @@ io.on('connection', (socket) => {
     let color = colors.pop()
     colors.unshift(color)
     socket.on('agge', data => {
-        console.log(`Got data on channel "agge": ${data}`);
+        let newData = {
+            rect: JSON.parse(data),
+            color
+        }
+        let pack = JSON.stringify(newData)
+        console.log(`Got data on channel "agge": ${pack}`);
         clients.forEach(client => {
             if(client === socket) return
             
-            let newData = {
-                rect: JSON.parse(data),
-                color
-            }
-            client.emit('agge', JSON.stringify(newData))
+            client.emit('agge', pack)
         })
     })
     console.log(`a user connected: ${socket.handshake.address}`);
