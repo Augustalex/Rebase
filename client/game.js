@@ -52,10 +52,14 @@ function run(state, lastRun) {
 
     ctx.font = '15px Arial'
     ctx.fillText('Holy moly', 10, 10);
-
-    setColor(255,0,0)
-    ctx.fillRect(dudad.rect.x, dudad.rect.y, dudad.rect.w, dudad.rect.h)
-    
+    //
+    // setColor({
+    //     r: 255,
+    //     g: 0,
+    //     b: 0
+    // })
+    // ctx.fillRect(dudad.rect.x, dudad.rect.y, dudad.rect.w, dudad.rect.h)
+    //
     orders.forEach(o => {
         let rect = o.rect
         let color = o.color

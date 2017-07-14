@@ -24,7 +24,7 @@ io.on('connection', (socket) => {
         let pack = JSON.stringify(newData)
         console.log(`Got data on channel "agge": ${pack}`);
         clients.forEach(client => {
-            if(client === socket) return
+            // if(client === socket) return
             
             client.emit('agge', pack)
         })
