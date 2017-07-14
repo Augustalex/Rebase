@@ -3,9 +3,9 @@ let http = require('http').Server(app)
 var io = require('socket.io')(http)
 
 app.set('port', 8080);
-app.get('/',  (req, res) => {
-    res.send('hello')
-})
+app.get('/', function(req, res){
+    res.sendFile(__dirname + '/server/clientTest.html');
+});
 
 io.on('connection', (socket) => {
     console.log('a user connected');
