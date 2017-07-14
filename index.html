@@ -3,10 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Rebase</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 </head>
 <body>
     <canvas id="canvas">
     </canvas>
+    <script>
+        var socket = io('http://192.168.1.19:8081')
+        setInterval(() => {
+            socket.emit('agge', 'yo')
+        }, 1000)
+    </script>
     <script src="client/game.js"></script>
 </body>
 </html>

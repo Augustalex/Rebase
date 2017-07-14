@@ -3,11 +3,11 @@ let http = require('http').Server(app)
 var io = require('socket.io')(http)
 
 app.set('port', 8080);
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/server/clientTest.html');
-});
 
 io.on('connection', (socket) => {
+    socket.on('agge', data => {
+        console.log(`Got data on channel "agge": ${data}`);
+    })
     console.log('a user connected');
 })
 
