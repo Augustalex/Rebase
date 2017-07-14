@@ -36,6 +36,7 @@ function broadcast(clientId, message) {
 function broadcastMove(clientId, data) {
     broadcast(clientId, {
         command: "movePlayer",
+        clientId: clientId,
         x: data.x,
         y: data.y,
     })
