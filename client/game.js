@@ -46,7 +46,6 @@ socket.on('agge', rawData => {
             clientId: player.clientId
         }))
     }
-    orders.push(JSON.parse(data))
 })
 
 window.onkeydown = function (event) {
