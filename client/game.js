@@ -57,7 +57,10 @@ function run(state, lastRun) {
     ctx.fillRect(dudad.rect.x, dudad.rect.y, dudad.rect.w, dudad.rect.h)
 
     orders.forEach(o => {
-        ctx.fillRect(o.x, o.y, o.w, o.h)
+        let rect = o.rect
+        let color = o.color
+        setColor(color[0], color[1], color[2])
+        ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
     })
     orders = []
 
