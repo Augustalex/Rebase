@@ -11,11 +11,22 @@ function genIntHeight(x, y, o, s) {
 	h = hashInt(h + o)
 	return h
 }
-function genHeight(x, y, o) {
+function genNormalHeight(x, y, o) {
 	return genIntHeight(x, y, o) / Math.pow(2, 31) - 1
 }
+function atEdge(x, s) {
+	return x === 0 || x === s - 1
+}
+function genHeight(x, y, w, h, o) {
+	if(atEdge(x, h) || atEdge(y, w)) {
+		return -1
+	}
+	else {
+		return genNormalHeight(x, y, o)
+	}
+}
 function genHeights(w, h, o) {
-	return Matrix(w, h).map((x, y) => genHeight(x, y, o))
+	return Matrix(w, h).map((x, y) => genHeight(x, y, w, h, o))
 }
 function genOctave(w, h, o, seed) {
 	let s = (1 << o) + 1
