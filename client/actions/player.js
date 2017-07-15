@@ -16,23 +16,23 @@ module.exports = {
             clientId
         })
     },
-    movePlayerUp(state, { delta }, { selector, setter }) {
-        let player = selector.getUserPlayer()
+    movePlayerUp(state, { clientId, delta }, { selector, setter }) {
+        let player = selector.getPlayerWithId(clientId)
         player.rect.y -= player.speed * delta
         return setter.setPlayer(player)
     },
-    movePlayerDown(state, { delta }, { selector, setter }) {
-        let player = selector.getUserPlayer()
+    movePlayerDown(state, { clientId, delta }, { selector, setter }) {
+        let player = selector.getPlayerWithId(clientId)
         player.rect.y += player.speed * delta
         return setter.setPlayer(player)
     },
-    movePlayerLeft(state, { delta }, { selector, setter }) {
-        let player = selector.getUserPlayer()
+    movePlayerLeft(state, { clientId, delta }, { selector, setter }) {
+        let player = selector.getPlayerWithId(clientId)
         player.rect.x -= player.speed * delta
         return setter.setPlayer(player)
     },
-    movePlayerRight(state, { delta }, { selector, setter }) {
-        let player = selector.getUserPlayer()
+    movePlayerRight(state, { clientId, delta }, { selector, setter }) {
+        let player = selector.getPlayerWithId(clientId)
         player.rect.x += player.speed * delta
         return setter.setPlayer(player)
     }

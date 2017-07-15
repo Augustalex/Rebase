@@ -30,18 +30,19 @@ function run(state, lastRun) {
     let delta = now - lastRun
     
     Object.keys(keysPressed).forEach(key => {
+        let data = {delta, clientId: store.selector.getClientId()}
         switch (key) {
             case 'w':
-                store.actions.movePlayerUp({delta})
+                store.actions.movePlayerUp(data)
                 break
             case 'a':
-                store.actions.movePlayerLeft({delta})
+                store.actions.movePlayerLeft(data)
                 break
             case 's':
-                store.actions.movePlayerDown({delta})
+                store.actions.movePlayerDown(data)
                 break
             case 'd':
-                store.actions.movePlayerRight({delta})
+                store.actions.movePlayerRight(data)
                 break
         }
     })

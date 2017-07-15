@@ -1,9 +1,10 @@
 let playerSelectors = require('./selectors/player.js')
+let userSelectors = require('./selectors/user.js')
 
 module.exports = function (deps) {
     let getState = deps.getState
     
-    let originalSelectors = Object.assign({}, playerSelectors)
+    let originalSelectors = Object.assign({}, playerSelectors, userSelectors)
     let curriedSelectors = {}
     
     Object.keys(originalSelectors).forEach(sel => {
