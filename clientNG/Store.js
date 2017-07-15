@@ -2,13 +2,11 @@ let Selector = require('./Selector.js')
 let Setter = require('./Setter.js')
 let playerActions = require('./actions/player.js')
 
-let allActions = Object.assign({},
-    playerActions,
-)
+let allActions = Object.assign({}, playerActions)
 
 module.exports = function () {
-    let selector = Selector({ getState })
-    let setter = Setter({ getState })
+    let selector = Selector({getState})
+    let setter = Setter({getState})
     
     let self = {
         state: {},
@@ -24,11 +22,14 @@ module.exports = function () {
         self.state = newState
     }
     
-    self.actions = allActions.map(action => {
-        return (params) => {
-            setState(actions[action](getState(), params, { selector, setter }))
+    self.actions = {}
+    Object.keys(allActions).forEach(action => {
+        self.actions[action] = (params) => {
+            setState(actions[action](getState(), params, {selector, setter}))
         }
-    }).push(getState, setState)
+    })
+    self.actions.setState = setState
+    self.actions.getState = getState
     
     return self
 }

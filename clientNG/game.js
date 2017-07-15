@@ -1,6 +1,6 @@
-let Store = require('./Store.js')
-let Socket = require('./Socket.js')
-let Dispatcher = require('./Dispatcher.js')
+let Store = require('./clientNG/Store.js')
+let Socket = require('./clientNG/Socket.js')
+let Dispatcher = require('./clientNG/Dispatcher.js')
 
 let store = Store()
 let socket = Socket('http://192.168.1.19:8081', store)
@@ -11,6 +11,11 @@ let ctx = canvas.getContext('2d')
 
 let keysPressed = {}
 
+window.onkeydown = function (event) {
+    let key = String.fromCharCode(event.keyCode).toLowerCase()
+    keysPressed[key] = true
+}
+
 window.onkeyup = function (event) {
     let key = String.fromCharCode(event.keyCode).toLowerCase()
     if(key in keysPressed){
@@ -18,39 +23,17 @@ window.onkeyup = function (event) {
     }
 }
 
-window.onkeydown = function (event) {
-    let key = String.fromCharCode(event.keyCode).toLowerCase()
-    keysPressed[key] = true
-    switch (key) {
-        case "w":
-            store.actions.movePlayerUp({ })
-            break
-        case "a":
-            player.rect.x -= player.speed
-            break
-        case "s":
-            player.rect.y += player.speed
-            break
-        case "d":
-            player.rect.x += player.speed
-            break
-        default:
-            console.log(key);
-    }
-    socket.emit('agge', JSON.stringify({
-        command: 'movePlayer',
-        x: player.rect.x,
-        y: player.rect.y
-    }))
-    console.log('movedPlayer')
-    if (key === 'CTRL_C') {
-        process.exit()
-    }
-}
-
 function run(state, lastRun) {
     let now = Date.now() / 1000
     let delta = now - lastRun
+    
+    Object.keys(keysPressed).forEach(key => {
+        switch (key) {
+            case 'W':
+                store.actions.movePlayerUp({ delta })
+            break
+        }
+    })
     
     setColor(0, 0, 0)
     clear()
@@ -58,6 +41,8 @@ function run(state, lastRun) {
     ctx.font = '15px Arial'
     ctx.fillText('Holy moly', 10, 10);
     
+    console.log(store.selector.getAllPlayers())
+    let players = store.selector.getAllPlayers()
     players.forEach(player => {
         let rect = player.rect
         let color = player.color

@@ -3,13 +3,13 @@ let playerQueries = require('./queries/player.js')
 module.exports = function (deps) {
     let getState = deps.getState
     
-    let selectors = Object.assign({},
-        playerQueries,
-    )
+    let originalSelectors = Object.assign({}, playerQueries)
+    let curriedSelectors = {}
     
-    return selectors.map(sel => {
-        return (params) => {
-            return selectors[sel](getState(), params)
+    Object.keys(originalSelectors).forEach(sel => {
+        curriedSelectors[sel] = (params) => {
+            return originalSelectors[sel](getState(), params)
         }
     })
+    return curriedSelectors
 }
