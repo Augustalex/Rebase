@@ -85,14 +85,14 @@ function run(state, lastRun) {
             let elapsedTime = now - person.startedWalking
             if (elapsedTime > person.walkTime) {
                 store.actions.walkInDirection({
-                    clientId,
+                    clientId: person.clientId,
                     personId: person.id,
                     startedWalking: now,
                     walkTime: Math.round(Math.random() * 10000),
                     direction: Math.random() * Math.PI * 2
                 })
                 store.actions.adjustPersonPosition({
-                    clientId,
+                    clientId: person.clientId,
                     personId: person.id,
                     position: { x: person.rect.x, y: person.rect.y }
                 })
