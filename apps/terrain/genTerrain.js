@@ -10,7 +10,7 @@ function genPrimaryMap(commons) {
 			min: 2,
 			max: 5,
 		},
-		weight: 10,
+		weight: 8,
 	})
 }
 function genSecondaryMap(commons) {
@@ -55,19 +55,27 @@ function createGrassType(s) {
 		}
 	}
 }
-function createType(p, s) {
-	if(p < 0.40) {
+function createType(p, s, seaLvl) {
+	if(p < seaLvl) {
 		return createWaterType(p, s)
 	}
 	else {
 		return createGrassType(s)
 	}
 }
+function average(map) {
+	let total = 0
+	map.foreach((x, y, v) => {
+		total += v
+	})
+	return total / (map.getW() * map.getH())
+}
 function genTerrain(seed) {
 	let maps = genMaps(seed)
+	const seaLvl = average(maps.primary) * 1.05
 
 	return maps.primary.zip(maps.secondary, (x, y, p, s) => {
-		return createType(p, s)
+		return createType(p, s, seaLvl)
 	})
 }
 
