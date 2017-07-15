@@ -1,7 +1,7 @@
 module.exports = {
     addHouse(state, house) {
-        state.players[house.clientId].houses = state.players[house.clientId].houses || []
-        state.players[house.clientId].houses.push(house)
+        state.houses[house.clientId] = state.houses[house.clientId] || []
+        state.houses[house.clientId].push(house)
         return state
     }
 }

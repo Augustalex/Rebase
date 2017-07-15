@@ -2,8 +2,9 @@ let Selector = require('./Selector.js')
 let Setter = require('./Setter.js')
 let playerActions = require('./actions/player.js')
 let buildingActions = require('./actions/building.js')
+let miscActions = require('./actions/misc.js')
 
-let allActions = Object.assign({}, playerActions, buildingActions)
+let allActions = Object.assign({}, playerActions, buildingActions, miscActions)
 
 module.exports = function () {
     let selector = Selector({getState})
@@ -12,7 +13,9 @@ module.exports = function () {
     let self = {
         state: {
             players: {},
-            user: {}
+            user: {},
+            houses: {},
+            persons: {}
         },
         actions: {},
         selector,
@@ -30,11 +33,12 @@ module.exports = function () {
     self.actions = {}
     Object.keys(allActions).forEach(action => {
         self.actions[action] = (params) => {
-            setState(allActions[action](getState(), params, {selector, setter}))
+            let state = getState()
+            setState(allActions[action](state, params, {selector, setter}))
         }
     })
-    self.actions.setState = setState
-    self.actions.getState = getState
+    self.setState = setState
+    self.getState = getState
     
     return self
 }

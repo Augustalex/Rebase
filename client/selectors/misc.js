@@ -3,9 +3,9 @@ const flatten = list => list.reduce(
 );
 
 module.exports = {
-    getAllHouses(state) {
-        return flatten(Object.keys(state.houses || {}).map(key => {
-            return state.houses[key] || []
+    getAllPersons(state) {
+        return flatten(Object.keys(state.persons || {}).map(key => {
+            return state.persons[key] || []
         }))
     }
 }

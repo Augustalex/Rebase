@@ -6,7 +6,8 @@ module.exports = function (url, deps){
     let socket = io(url)
     
     socket.on('handshake', clientId => {
-        setter.setClientId(clientId)
+        console.log('store', store)
+        setter.setClientId(store.getState(), clientId)
         console.log(`Got handshake: ${clientId}`)
         store.actions.createPlayer({ clientId })
         let player = selector.getUserPlayer()

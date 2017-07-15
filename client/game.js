@@ -3,7 +3,7 @@ let Socket = require('./client/Socket.js')
 let Dispatcher = require('./client/Dispatcher.js')
 
 let localStore = Store()
-let socket = Socket('http://192.168.1.19:8081', { localStore })
+let socket = Socket('http://192.168.1.19:8081', {localStore})
 let store = Dispatcher({socket}).wrap(localStore)
 
 let canvas = document.getElementById('canvas')
@@ -24,12 +24,17 @@ window.onkeyup = function (event) {
     }
 }
 
+function rand(max){
+    return Math.floor(Math.random() * max)
+}
+
 function run(state, lastRun) {
     let now = Date.now() / 1000
     let delta = now - lastRun
     
+    let clientId = store.selector.getClientId()
     Object.keys(keysPressed).forEach(key => {
-        let data = {delta, clientId: store.selector.getClientId()}
+        let data = {delta, clientId}
         switch (key) {
             case 'w':
                 store.actions.movePlayerUp(data)
@@ -45,7 +50,14 @@ function run(state, lastRun) {
                 break
             case 'h':
                 store.actions.createHouse(data)
-                break;
+                break
+            case 'p':
+                store.actions.spawnPerson({
+                    clientId,
+                    personId: `${Math.random() * 100000}`,
+                    color: [rand(255), rand(255), rand(255)]
+                })
+                break
         }
     })
     
@@ -56,9 +68,9 @@ function run(state, lastRun) {
     ctx.fillText('Holy moly', 10, 10);
     
     let players = store.selector.getAllPlayers()
-    players.forEach(player => {
-        let rect = player.rect
-        let color = player.color
+    store.selector.getAllHouses().forEach(house => {
+        let rect = house.rect
+        let color = house.color
         setColor({
             r: color[0],
             g: color[1],
@@ -66,9 +78,43 @@ function run(state, lastRun) {
         })
         ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
     })
-    store.selector.getAllHouses().forEach(house => {
-        let rect = house.rect
-        let color = house.color
+    
+    store.selector.getAllPersons().forEach(person => {
+        if (person.clientId === clientId) {
+            let now = Date.now()
+            let elapsedTime = now - person.startedWalking
+            if (elapsedTime > person.walkTime) {
+                store.actions.walkInDirection({
+                    clientId,
+                    personId: person.id,
+                    startedWalking: now,
+                    walkTime: Math.round(Math.random() * 10000),
+                    direction: Math.random() * Math.PI * 2
+                })
+                store.actions.adjustPersonPosition({
+                    clientId,
+                    personId: person.id,
+                    position: { x: person.rect.x, y: person.rect.y }
+                })
+            }
+            else{
+                person.rect.x += person.speed * delta * Math.cos(person.direction)
+                person.rect.y += person.speed * delta * Math.sin(person.direction)
+            }
+        }
+    
+        let rect = person.rect
+        let color = person.color
+        setColor({
+            r: color[0],
+            g: color[1],
+            b: color[2]
+        })
+        ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
+    })
+    players.forEach(player => {
+        let rect = player.rect
+        let color = player.color
         setColor({
             r: color[0],
             g: color[1],

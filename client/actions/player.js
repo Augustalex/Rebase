@@ -1,10 +1,10 @@
 
 module.exports = {
     addPlayer(state, player, { selector, setter }){
-        return setter.setPlayer(player)
+        return setter.setPlayer(state, player)
     },
     createPlayer(state, { clientId }, { selector, setter }){
-        return setter.setPlayer({
+        return setter.setPlayer(state, {
             rect:{
                 x: 50,
                 y: 50,
@@ -19,21 +19,21 @@ module.exports = {
     movePlayerUp(state, { clientId, delta }, { selector, setter }) {
         let player = selector.getPlayerWithId(clientId)
         player.rect.y -= player.speed * delta
-        return setter.setPlayer(player)
+        return setter.setPlayer(state, player)
     },
     movePlayerDown(state, { clientId, delta }, { selector, setter }) {
         let player = selector.getPlayerWithId(clientId)
         player.rect.y += player.speed * delta
-        return setter.setPlayer(player)
+        return setter.setPlayer(state, player)
     },
     movePlayerLeft(state, { clientId, delta }, { selector, setter }) {
         let player = selector.getPlayerWithId(clientId)
         player.rect.x -= player.speed * delta
-        return setter.setPlayer(player)
+        return setter.setPlayer(state, player)
     },
     movePlayerRight(state, { clientId, delta }, { selector, setter }) {
         let player = selector.getPlayerWithId(clientId)
         player.rect.x += player.speed * delta
-        return setter.setPlayer(player)
+        return setter.setPlayer(state, player)
     }
 }

@@ -3,7 +3,7 @@ module.exports = {
     createHouse(state, {clientId}, { selector, setter }){
         let player = selector.getPlayerWithId(clientId)
         
-        return setter.addHouse({
+        return setter.addHouse(state, {
             rect:{
                 x: player.rect.x,
                 y: player.rect.y,
