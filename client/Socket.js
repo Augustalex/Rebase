@@ -45,6 +45,6 @@ module.exports = function (url, deps){
     
     function sendCommand(command, data) {
         let wrappedData = {command, data }
-        socket.emit(command, wrappedData)
+        socket.emit('command', wrappedData)
     }
 }

@@ -2,6 +2,8 @@ let app = require('express')()
 let http = require('http').Server(app)
 var io = require('socket.io')(http)
 
+let DEBUG = false
+
 app.set('port', 8081);
 
 var clientIdCounter = 1
@@ -14,10 +16,10 @@ function genClientId() {
 }
 
 function broadcast(channel, clientId, message) {
-    console.log(`broadcast(${channel}, ${clientId}, ${JSON.stringify(message)})`)
+    if(DEBUG) console.log(`broadcast(${channel}, ${clientId}, ${JSON.stringify(message)})`)
     for(let otherClientId in clients) {
         if(clientId !== otherClientId) {
-            console.log(`sending to ${otherClientId} with data ${JSON.stringify(message)}`)
+            if(DEBUG) console.log(`sending to ${otherClientId} with data ${JSON.stringify(message)}`)
             const client = clients[otherClientId]
             client.socket.emit(channel, message)
         }
