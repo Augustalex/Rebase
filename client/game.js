@@ -80,7 +80,7 @@ function run(state, lastRun) {
     })
     
     store.selector.getAllPersons().forEach(person => {
-        if (person.clientId === clientId) {
+        // if (person.clientId === clientId) {
             let now = Date.now()
             let elapsedTime = now - person.startedWalking
             if (elapsedTime > person.walkTime) {
@@ -101,7 +101,7 @@ function run(state, lastRun) {
                 person.rect.x += person.speed * delta * Math.cos(person.direction)
                 person.rect.y += person.speed * delta * Math.sin(person.direction)
             }
-        }
+        // }
     
         let rect = person.rect
         let color = person.color
