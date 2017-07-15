@@ -27,7 +27,7 @@ function genHeightmap(options) {
 
 	let octaves = genOctaves(width, height, minOctave, maxOctave, seed)
 	let heightmap = foldOctaves(octaves, weight)
-	return heightmap
+	return heightmap.map((x, y, v) => (v + 1) / 2)
 }
 
 module.exports = genHeightmap

@@ -12,7 +12,7 @@ function genIntHeight(x, y, o, s) {
 	return h
 }
 function genHeight(x, y, o) {
-	return genIntHeight(x, y, o) / Math.pow(2, 32)
+	return genIntHeight(x, y, o) / Math.pow(2, 31) - 1
 }
 function genHeights(w, h, o) {
 	return Matrix(w, h).map((x, y) => genHeight(x, y, o))
