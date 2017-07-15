@@ -43,6 +43,9 @@ function run(state, lastRun) {
             case 'd':
                 store.actions.movePlayerRight(data)
                 break
+            case 'h':
+                store.actions.createHouse(data)
+                break;
         }
     })
     
@@ -56,6 +59,16 @@ function run(state, lastRun) {
     players.forEach(player => {
         let rect = player.rect
         let color = player.color
+        setColor({
+            r: color[0],
+            g: color[1],
+            b: color[2]
+        })
+        ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
+    })
+    store.selector.getAllHouses().forEach(house => {
+        let rect = house.rect
+        let color = house.color
         setColor({
             r: color[0],
             g: color[1],
