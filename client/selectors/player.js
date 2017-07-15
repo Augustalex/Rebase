@@ -9,7 +9,9 @@ module.exports = {
         })
     },
     getUserPlayer(state) {
-        return state.players[state.user.clientId]
+        let player = state.players[state.user.clientId]
+        console.log('getUserPlayer' + JSON.stringify(player))
+        return player
     }
     
 }

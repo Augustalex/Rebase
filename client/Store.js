@@ -11,9 +11,7 @@ module.exports = function () {
     let self = {
         state: {
             players: {},
-            user: {
-                clientId: '1'
-            }
+            user: {}
         },
         actions: {},
         selector,
