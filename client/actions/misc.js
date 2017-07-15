@@ -9,7 +9,14 @@ module.exports = {
             walkTime: 0,
             direction: 0,
             rect: {
-                x, y, w: 10, h: 10
+                x, y, w: 10, h: 10,
+                details: [{
+                    relX: 0,
+                    relY: 8,
+                    w: 10,
+                    h: 2
+                }]
+
             },
             color,
             speed: 10,

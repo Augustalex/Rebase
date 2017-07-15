@@ -9,8 +9,15 @@ module.exports = {
                 x: 50,
                 y: 50,
                 w: 10,
-                h: 10
+                h: 10,
             },
+            details: [{
+                relX: 0,
+                relY: 8,
+                w: 10,
+                h: 2,
+                color:[0, 0, 0]
+            }],
             color:[255, 0, 0],
             speed: 20,
             clientId

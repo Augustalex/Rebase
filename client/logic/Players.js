@@ -52,6 +52,17 @@ module.exports = function (deps) {
                 b: color[2]
             })
             ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
+
+            let details = player.details
+            for(let detail of details){
+                let color = detail.color
+                setColor({
+                    r: color[0],
+                    g: color[1],
+                    b: color[2]
+                })
+                ctx.fillRect(rect.x + detail.relX, rect.y + detail.relY, detail.w, detail.h)
+            }
         }
     }
 }
