@@ -48,18 +48,3 @@ io.on('connection', (socket) => {
 http.listen(8081, '0.0.0.0', () => {
     console.log('listening to 3012');
 })
-
-function genPosPart() {
-    return Math.round(Math.random() * 1000)
-}
-
-function genColorPart() {
-    return Math.round(Math.random() * 255)
-}
-function genColor() {
-    return [
-        genColorPart(),
-        genColorPart(),
-        genColorPart(),
-    ]
-}
