@@ -17,8 +17,7 @@ module.exports = function (url, deps){
         socket.emit('requestPlayer')
     })
     
-    socket.on('command', (json) => {
-        let obj = JSON.parse(json)
+    socket.on('command', obj => {
         if(obj.command === 'addPlayer' && selector.getPlayerWithId(obj.data.clientId)) return
         
         store.actions[obj.command](obj.data)
