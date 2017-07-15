@@ -1,5 +1,5 @@
 
-let Matrix = require("./matrix.js")
+let Matrix = require("../utils/matrix.js")
 let interpolate = require("./interpolate.js")
 
 function interpolateHeights(w, h, heights) {

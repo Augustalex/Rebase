@@ -1,8 +1,8 @@
 
 let hashInt = require("hash-int")
-let Matrix = require("./matrix.js")
+let Matrix = require("../utils/matrix.js")
 let interpolateHeights = require("./interpolateHeights.js")
-let F = require("./f.js")
+let F = require("../utils/f.js")
 
 function genIntHeight(x, y, o, s) {
 	let h = 1 << 30

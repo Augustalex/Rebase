@@ -1,6 +1,6 @@
 
 let dumpImage = require("./dumpImage.js")
-let genHeightmap = require("./genHeightmap.js")
+let genHeightmap = require("./heightmap/genHeightmap.js")
 
 let heightmap = genHeightmap({
 	seed: 0,

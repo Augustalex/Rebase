@@ -1,5 +1,5 @@
 
-let F = require("./f.js")
+let F = require("../utils/f.js")
 let genOctaves = require("./genOctaves.js")
 
 function foldOctaves(octaves, weight) {
