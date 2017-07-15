@@ -26,28 +26,49 @@ function genOctave(w, h, o, seed) {
 	return genHeightmap(w, h, heights)
 }
 
+function range(a, b) {
+	let r = []
+	for(let i = a; i <= b; i++) {
+		r.push(i)
+	}
+	return r
+}
+function map(arr, cb) {
+	let r = []
+	for(let k in arr) {
+		r.push(cb(arr[k], k))
+	}
+	return r
+}
+function fold(arr, cb) {
+	if(arr.length === 0) {
+		return []
+	}
+	let c = arr[0]
+	for(let i = 1; i < arr.length; i++) {
+		c = cb(c, arr[i])
+	}
+	return c
+}
+
 let seed = 0//Math.floor(Math.random() * 100)
 
 const minOctave = 2
 const maxOctave = 9
+
 const weight = 5
+const rweight = 1 / weight
+const lweight = 1 - rweight
 
-let octaves = []
-for(var o = minOctave; o <= maxOctave; o++) {
-	const s = 1 << maxOctave
-	octaves.push(genOctave(s, s, o, seed))
-}
+const imgSize = 1 << maxOctave
+let octaves = map(range(minOctave, maxOctave),
+	(o) => genOctave(imgSize, imgSize, o, seed))
 
-let fullHeightmap = octaves[0]
-for(var i = 1; i < octaves.length; i++) {
-	fullHeightmap = fullHeightmap.zip(octaves[i], (x, y, l, r) => {
-		const lw = (weight - 1) / weight
-		const rw = 1 / weight
-		return l * lw + r * rw
-	})
-}
+let heightmap = fold(octaves, (lmat, rmat) => {
+	return lmat.zip(rmat, (x, y, l, r) => l * lweight + r * rweight)
+})
 
-dumpImage(fullHeightmap)
+dumpImage(heightmap)
 
 /*
 let socket = io('http://192.168.1.19:8081')
