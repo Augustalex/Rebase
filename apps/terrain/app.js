@@ -32,20 +32,25 @@ function smoothstep(a, b, x) {
 function interpolate2d(ay, by, ax, bx, x) {
 	return ay + (by - ay) * smoothstep(ax, bx, x)
 }
-function interpolate3d(ys, bx, bz, tx, tz, x, z) {
-	let by = interpolate2d(ys[0], ys[1], bx, tx, x)
-	let ty = interpolate2d(ys[2], ys[3], bx, tx, x)
+function interpolate3d(bl, br, tl, tr, bx, bz, tx, tz, x, z) {
+	let by = interpolate2d(bl, br, bx, tx, x)
+	let ty = interpolate2d(tl, tr, bx, tx, x)
 	return interpolate2d(by, ty, bz, tz, z)
 }
-console.log(Matrix(20, 20)
-	.map((x,y)=>interpolate3d([0,3,7,10],2,2,18,18,x,y))
-	.map((x,y,v)=>Math.floor(v))
-	.toString()
-)
 
 let seed = Math.floor(Math.random() * 100)
-let heights = genHeights(200, 200, seed)
-dumpImage(heights)
+
+let heights = genHeights(2, 2, seed)
+let heightmap = Matrix(200, 200).map((x, y) => {
+	return interpolate3d(
+		heights.get(0, 0),
+		heights.get(1, 0),
+		heights.get(0, 1),
+		heights.get(1, 1),
+		10, 10, 190, 190, x, y)
+})
+//console.log(heightmap.map((x,y,v)=>Math.floor(v*10)).toString())
+dumpImage(heightmap)
 
 /*
 let socket = io('http://192.168.1.19:8081')
