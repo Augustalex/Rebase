@@ -3,7 +3,6 @@ let Socket = require('./client/Socket.js')
 let Dispatcher = require('./client/Dispatcher.js')
 
 let localStore = Store()
-console.log(localStore)
 let socket = Socket('http://192.168.1.19:8081', { localStore })
 let store = Dispatcher({socket}).wrap(localStore)
 
