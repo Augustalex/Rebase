@@ -8,9 +8,9 @@ function dumpImage(pixels) {
 
 	pixels.foreach((x, y, pixel) => {
 		image.setAt(x, y, {
-			red: 0,
-			green: pixel * 255,
-			blue: 0,
+			red: pixel.color.r,
+			green: pixel.color.g,
+			blue: pixel.color.b,
 			alpha: 255,
 		})
 	})

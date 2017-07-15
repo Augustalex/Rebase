@@ -1,16 +1,9 @@
 
 let dumpImage = require("./dumpImage.js")
-let genHeightmap = require("./heightmap/genHeightmap.js")
+let genTerrain = require("./genTerrain.js")
 
-let heightmap = genHeightmap({
-	seed: 0,
-	octaves: {
-		min: 2,
-		max: 9,
-	},
-	weight: 5,
-})
-dumpImage(heightmap)
+let terrain = genTerrain()
+dumpImage(terrain)
 
 /*
 let socket = io('http://192.168.1.19:8081')
