@@ -6,19 +6,19 @@ module.exports = {
     createFlag
 }
 
-function createFlag(color) {
+function createFlag(color, origW, origH) {
     return [{
-        relX: 10,
-        relY: 5,
+        relX: (origW / 2) - 5,
+        relY: (origH / 2) - 5,
         w: 2,
         h: 10,
         color:[0, 0, 0]
     },
     {
-        relX: 12,
-        relY: 7,
-        w: 10,
-        h: 5,
+        relX: (origW / 2) - 3,
+        relY: (origH / 2) - 5,
+        w: 8,
+        h: 6,
         color: color
     }]
 }
