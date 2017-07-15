@@ -24,6 +24,7 @@ module.exports = {
     },
     walkInDirection(state, data, { selector, setter }){
         let key = `${data.clientId}:${data.personId}`
+        console.log('walkInDirection', key)
         return setter.setPersonWalkParameters(state, {
             key,
             startedWalking: data.startedWalking,

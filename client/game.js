@@ -54,7 +54,7 @@ function run(state, lastRun) {
             case 'p':
                 store.actions.spawnPerson({
                     clientId,
-                    personId: `${Math.random() * 100000}`,
+                    personId: `${Math.round(Math.random() * 100000)}`,
                     color: [rand(255), rand(255), rand(255)]
                 })
                 break
