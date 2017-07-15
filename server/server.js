@@ -4,7 +4,7 @@ var io = require('socket.io')(http)
 
 app.set('port', 8081);
 
-var clientIdCounter = 1;
+var clientIdCounter = 1
 var clients = {};
 
 function genClientId() {
@@ -20,7 +20,7 @@ function broadcast(clientId, message) {
     console.log(`broadcast(${clientId}, ${message})`)
     for(let otherClientId in clients) {
         if(clientId !== otherClientId) {
-            console.log(`sending to ${clientId} with data ${message}`)
+            console.log(`sending to ${otherClientId} with data ${message}`)
             const client = clients[otherClientId]
             client.socket.emit("agge", message)
         }
