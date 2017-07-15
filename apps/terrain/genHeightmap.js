@@ -1,29 +1,30 @@
 
-let Matrix = require("./matrix.js")
-let interpolate = require("./interpolate.js")
+let F = require("./f.js")
+let genOctaves = require("./genOctaves.js")
 
-function genHeightmap(w, h, heights) {
-	const dx = w / (heights.getW() - 1)
-	const dy = h / (heights.getH() - 1)
+function foldOctaves(octaves, weight) {
+	const rweight = 1 / weight
+	const lweight = 1 - rweight
 
-	return Matrix(w, h).map((x, y) => {
-		const bix = Math.floor(x / dx)
-		const biy = Math.floor(y / dy)
-		const tix = bix + 1
-		const tiy = biy + 1
-
-		const bl = heights.get(bix, biy)
-		const br = heights.get(tix, biy)
-		const tl = heights.get(bix, tiy)
-		const tr = heights.get(tix, tiy)
-
-		const bx = bix * dx
-		const by = biy * dy
-		const tx = tix * dx
-		const ty = tiy * dy
-
-		return interpolate(bl, br, tl, tr, bx, by, tx, ty, x, y)
+	return F.fold(octaves, (lmat, rmat) => {
+		return lmat.zip(rmat, (x, y, l, r) => l * lweight + r * rweight)
 	})
+}
+function genHeightmap(options) {
+	const seed = options.seed || 0
+
+	const minOctave = options.octaves.min
+	const maxOctave = options.octaves.max
+
+	const defaultSize = 1 << maxOctave
+	const width = options.width || defaultSize
+	const height = options.height || defaultSize
+
+	const weight = options.weight
+
+	let octaves = genOctaves(width, height, minOctave, maxOctave, seed)
+	let heightmap = foldOctaves(octaves, weight)
+	return heightmap
 }
 
 module.exports = genHeightmap
