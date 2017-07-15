@@ -14,15 +14,12 @@ function genClientId() {
 }
 
 function broadcast(clientId, message) {
-    if(typeof message === "object") {
-        message = JSON.stringify(message)
-    }
     console.log(`broadcast(${clientId}, ${message})`)
     for(let otherClientId in clients) {
         if(clientId !== otherClientId) {
             console.log(`sending to ${otherClientId} with data ${message}`)
             const client = clients[otherClientId]
-            client.socket.emit("agge", message)
+            client.socket.emit("command", message)
         }
     }
 }
