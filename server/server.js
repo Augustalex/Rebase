@@ -6,6 +6,7 @@ let DEBUG = false
 
 app.set('port', 8081);
 
+let log = []
 var clientIdCounter = 1
 var clients = {};
 
@@ -16,10 +17,10 @@ function genClientId() {
 }
 
 function broadcast(channel, clientId, message) {
-    if(DEBUG) console.log(`broadcast(${channel}, ${clientId}, ${JSON.stringify(message)})`)
-    for(let otherClientId in clients) {
-        if(clientId !== otherClientId) {
-            if(DEBUG) console.log(`sending to ${otherClientId} with data ${JSON.stringify(message)}`)
+    if (DEBUG) console.log(`broadcast(${channel}, ${clientId}, ${JSON.stringify(message)})`)
+    for (let otherClientId in clients) {
+        if (clientId !== otherClientId) {
+            if (DEBUG) console.log(`sending to ${otherClientId} with data ${JSON.stringify(message)}`)
             const client = clients[otherClientId]
             client.socket.emit(channel, message)
         }
@@ -31,13 +32,17 @@ io.on('connection', (socket) => {
     clients[clientId] = {
         socket: socket,
     }
-    socket.on('command', data => broadcast('command', clientId, data))
-    socket.on('requestPlayer', data => {
-        broadcast('requestPlayer', clientId, data)
+    socket.on('command', data => {
+        log.push(data)
+        broadcast('command', clientId, data)
     })
 
     socket.emit('handshake', clientId)
     console.log(`sent command handshake to ${socket.handshake.address} with clientId ${clientId}`)
+    log.forEach(l => {
+        socket.emit('command', l)
+    })
+    console.log(`Transmitted all ${log.length} logged commands to player`)
 })
 
 http.listen(8081, '0.0.0.0', () => {
