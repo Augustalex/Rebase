@@ -8,24 +8,32 @@ module.exports = function (url, deps){
     
     socket.on('handshake', clientId => {
         setter.setClientId(clientId)
+        console.log(`Got handshake: ${clientId}`)
         store.actions.createPlayer({ clientId })
         let player = selector.getUserPlayer()
+        console.log(`Created player: ${JSON.stringify(player)}`)
+        
         socket.emit('command', {
             command: 'addPlayer',
             data: player
         })
+        console.log('Emitted add player')
         socket.emit('requestPlayer')
+        console.log('Emitted request player')
     })
     
     socket.on('command', obj => {
+        console.log(`Got command with: ${JSON.stringify(obj)}`)
         if(obj.command === 'addPlayer' && selector.getPlayerWithId(obj.data.clientId)) return
         
         store.actions[obj.command](obj.data)
     })
     
     socket.on('requestPlayer', () => {
+        console.log('Got request player')
         let player = selector.getUserPlayer()
         socket.emit('addPlayer', player)
+        console.log(`Emitted addPlayer: ${JSON.stringify(player)}`)
     })
     
     return {
