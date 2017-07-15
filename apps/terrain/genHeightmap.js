@@ -10,8 +10,11 @@ function foldOctaves(octaves, weight) {
 		return lmat.zip(rmat, (x, y, l, r) => l * lweight + r * rweight)
 	})
 }
+function now() {
+	return new Date().getTime()
+}
 function genHeightmap(options) {
-	const seed = options.seed || 0
+	const seed = options.seed || now()
 
 	const minOctave = options.octaves.min
 	const maxOctave = options.octaves.max
