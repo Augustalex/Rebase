@@ -7,7 +7,6 @@ module.exports = {
     },
     setPersonWalkParameters(state, { key, startedWalking, walkTime, direction }){
         let person = state.persons[key]
-        console.log('setPersonWalkParameters', person)
         person.startedWalking = startedWalking
         person.walkTime = walkTime
         person.direction = direction

@@ -1,7 +1,6 @@
 
 module.exports = {
     spawnPerson(state, {clientId, personId, color}, { selector, setter }){
-        console.log('SPAWN PERSON', clientId, personId)
         let player = selector.getPlayerWithId(clientId)
         let x = player.rect.x
         let y = player.rect.y
@@ -24,7 +23,6 @@ module.exports = {
     },
     walkInDirection(state, data, { selector, setter }){
         let key = `${data.clientId}:${data.personId}`
-        console.log('walkInDirection', key)
         return setter.setPersonWalkParameters(state, {
             key,
             startedWalking: data.startedWalking,

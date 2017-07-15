@@ -4,7 +4,8 @@ let Dispatcher = require('./client/Dispatcher.js')
 
 let localStore = Store()
 // let socket = Socket('http://192.168.1.19:8081', {localStore})
-let socket = Socket('http://127.0.0.1:8081', {localStore})
+let socket = Socket('http://192.168.1.21:8081', {localStore})
+// let socket = Socket('http://127.0.0.1:8081', {localStore})
 let store = Dispatcher({socket}).wrap(localStore)
 
 let canvas = document.getElementById('canvas')
@@ -14,7 +15,6 @@ let keysPressed = {}
 
 window.onkeydown = function (event) {
     let key = String.fromCharCode(event.keyCode).toLowerCase()
-    console.log('key', key)
     keysPressed[key] = true
 }
 
