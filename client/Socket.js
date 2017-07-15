@@ -32,7 +32,10 @@ module.exports = function (url, deps){
     socket.on('requestPlayer', () => {
         console.log('Got request player')
         let player = selector.getUserPlayer()
-        socket.emit('addPlayer', player)
+        socket.emit('command', {
+            command: 'addPlayer',
+            data: player
+        })
         console.log(`Emitted addPlayer: ${JSON.stringify(player)}`)
     })
     
