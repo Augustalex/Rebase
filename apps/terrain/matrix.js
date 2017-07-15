@@ -28,9 +28,21 @@ function Matrix(w, h) {
 		}
 	}
 	function map(cb) {
+		var mat = Matrix(w, h)
 		foreach((x, y, v) => {
-			set(x, y, cb(x, y, v))
+			mat.set(x, y, cb(x, y, v))
 		})
+		return mat
+	}
+	function toString() {
+		var str = ""
+		for(let y = 0; y < h; y++) {
+			for(let x = 0; x < w; x++) {
+				str += get(x, y) + " "
+			}
+			str += '\n'
+		}
+		return str
 	}
 	return {
 		getW,
@@ -39,6 +51,7 @@ function Matrix(w, h) {
 		set,
 		foreach,
 		map,
+		toString,
 	}
 }
 

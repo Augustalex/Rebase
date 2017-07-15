@@ -6,10 +6,6 @@ function dumpImage(pixels) {
 	let h = pixels.getH()
 	let image = PNGImage.createImage(w, h)
 
-	/*
-	for(let y = 0; y < h; y++){
-		for(let x = 0; x < w; x++) {
-	*/
 	pixels.foreach((x, y, pixel) => {
 		image.setAt(x, y, {
 			red: 0,
