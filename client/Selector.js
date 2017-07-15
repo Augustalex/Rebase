@@ -1,9 +1,9 @@
-let playerQueries = require('./queries/player.js')
+let playerSelectors = require('./selectors/player.js')
 
 module.exports = function (deps) {
     let getState = deps.getState
     
-    let originalSelectors = Object.assign({}, playerQueries)
+    let originalSelectors = Object.assign({}, playerSelectors)
     let curriedSelectors = {}
     
     Object.keys(originalSelectors).forEach(sel => {

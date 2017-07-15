@@ -9,9 +9,15 @@ module.exports = function () {
     let setter = Setter({getState})
     
     let self = {
-        state: {},
+        state: {
+            players: {},
+            user: {
+                clientId: '1'
+            }
+        },
         actions: {},
-        selector
+        selector,
+        setter
     }
     
     function getState() {
@@ -25,7 +31,7 @@ module.exports = function () {
     self.actions = {}
     Object.keys(allActions).forEach(action => {
         self.actions[action] = (params) => {
-            setState(actions[action](getState(), params, {selector, setter}))
+            setState(allActions[action](getState(), params, {selector, setter}))
         }
     })
     self.actions.setState = setState

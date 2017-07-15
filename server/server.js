@@ -4,17 +4,6 @@ var io = require('socket.io')(http)
 
 app.set('port', 8081);
 
-function genColorPart() {
-    return Math.round(Math.random() * 255)
-}
-function genColor() {
-    return [
-        genColorPart(),
-        genColorPart(),
-        genColorPart(),
-    ]
-}
-
 var clientIdCounter = 1;
 var clients = {};
 
@@ -23,6 +12,7 @@ function genClientId() {
     clientIdCounter++
     return clientId.toString()
 }
+
 function broadcast(clientId, message) {
     if(typeof message === "object") {
         message = JSON.stringify(message)
@@ -36,40 +26,6 @@ function broadcast(clientId, message) {
         }
     }
 }
-function broadcastMove(clientId, data) {
-    broadcast(clientId, {
-        command: "movePlayer",
-        clientId: clientId,
-        x: data.x,
-        y: data.y,
-    })
-}
-function genPosPart() {
-    return Math.round(Math.random() * 1000)
-}
-function broadcastCreatePlayerData(clientId, data) {
-    data = Object.assign({}, data, {
-        command: "createPlayer",
-    })
-    broadcast(null, data)
-}
-function broadcastCreatePlayer(clientId) {
-    broadcastCreatePlayerData(clientId, {
-        clientId: clientId,
-        w: 10,
-        h: 10,
-        x: genPosPart(),
-        y: genPosPart(),
-        speed: 5,
-        color: genColor(),
-    })
-}
-function broadcastRequestPlayer(clientId) {
-    broadcast(clientId, {
-        command: 'requestPlayer',
-        clientId: clientId,
-    })
-}
 
 io.on('connection', (socket) => {
     const clientId = genClientId();
@@ -78,20 +34,32 @@ io.on('connection', (socket) => {
     }
     socket.on('command', (data) => broadcast(clientId, data))
     socket.on('responsePlayer', (data) => {
-        data = JSON.parse(data)
-        broadcastCreatePlayerData(data.clientId, data)
+        broadcast(clientId, data)
+    })
+    socket.on('requestPlayer', () => {
+        broadcast(clientId, data)
     })
 
-    socket.emit("command", JSON.stringify({
-        command: "handshake",
-        clientId: clientId,
-    }))
-    console.log('sent command handshake')
-    broadcastCreatePlayer(clientId)
-    broadcastRequestPlayer(clientId)
+    socket.emit('handshake', clientId)
     console.log(`a user connected: ${socket.handshake.address} that was given this id: ${clientId}`);
+    console.log(`sent command handshake ${socket.handshake.address}`)
 })
 
 http.listen(8081, '0.0.0.0', () => {
     console.log('listening to 3012');
 })
+
+function genPosPart() {
+    return Math.round(Math.random() * 1000)
+}
+
+function genColorPart() {
+    return Math.round(Math.random() * 255)
+}
+function genColor() {
+    return [
+        genColorPart(),
+        genColorPart(),
+        genColorPart(),
+    ]
+}

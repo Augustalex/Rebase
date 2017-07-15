@@ -4,14 +4,15 @@ module.exports = function (deps) {
     return {
         wrap(store) {
             let actions = store.actions
-            store.actions = {}
-            
+            let wrappedStore = Object.assign({}, store)
+            wrappedStore.actions = {}
             Object.keys(actions).forEach(action => {
-                store.actions[action] = (params) => {
+                wrappedStore.actions[action] = (params) => {
                     socket.sendCommand(action, params)
                     actions[action](params)
                 }
             })
+            return wrappedStore
         }
     }
 }
