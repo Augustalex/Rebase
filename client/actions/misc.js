@@ -1,6 +1,7 @@
 
 module.exports = {
     spawnPerson(state, {clientId, personId, color}, { selector, setter }){
+        console.log('SPAWN PERSON', clientId, personId)
         let player = selector.getPlayerWithId(clientId)
         let x = player.rect.x
         let y = player.rect.y
