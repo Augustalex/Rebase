@@ -34,6 +34,11 @@ function Matrix(w, h) {
 		})
 		return mat
 	}
+	function zip(other, cb) {
+		return map((x, y, l) => {
+			return cb(x, y, l, other.get(x, y))
+		})
+	}
 	function toString() {
 		var str = ""
 		for(let y = 0; y < h; y++) {
@@ -51,6 +56,7 @@ function Matrix(w, h) {
 		set,
 		foreach,
 		map,
+		zip,
 		toString,
 	}
 }
