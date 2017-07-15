@@ -55,13 +55,14 @@ function createGrassType(s) {
 		}
 	}
 }
-function createBeachType() {
+function createBeachType(s) {
+	s = s * 0.3 + 0.74
 	return {
 		type: "beach",
 		color: {
-			r: 245,
-			g: 238,
-			b: 158,
+			r: s * 245,
+			g: s * 238,
+			b: s * 158,
 		}
 	}
 }
@@ -69,7 +70,7 @@ function createType(p, s, seaLvl) {
 	if(p < seaLvl) {
 		return createWaterType(p, s)
 	}
-	else if(p < seaLvl + 0.01) {
+	else if(p < seaLvl + 0.08) {
 		return createBeachType(s)
 	}
 	else {
