@@ -3,8 +3,8 @@ let Socket = require('./client/Socket.js')
 let Dispatcher = require('./client/Dispatcher.js')
 
 let localStore = Store()
-// let socket = Socket('http://192.168.1.19:8081', {localStore})
-let socket = Socket('http://192.168.1.21:8081', {localStore})
+let socket = Socket('http://192.168.1.19:8081', {localStore})
+// let socket = Socket('http://192.168.1.21:8081', {localStore})
 // let socket = Socket('http://127.0.0.1:8081', {localStore})
 let store = Dispatcher({socket}).wrap(localStore)
 
