@@ -1,127 +1,47 @@
+let Logic = require('./client/logic/Logic.js')
+let Store = require('./client/Store.js')
+let Socket = require('./client/Socket.js')
+let Dispatcher = require('./client/Dispatcher.js')
+
+let localStore = Store()
+let socket = Socket('http://192.168.1.19:8081', { localStore })
+// let socket = Socket('http://192.168.1.21:8081', {localStore})
+// let socket = Socket('http://127.0.0.1:8081', {localStore})
+let store = Dispatcher({ socket }).wrap(localStore)
+
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext('2d')
 
-let socket = io('http://192.168.1.19:8081')
-
-
-let players = []
-let clientId
-
-socket.on('agge', rawData => {
-    let data = JSON.parse(rawData)
-    
-    if(data.command === 'handshake'){
-        console.log('got "handshake"', data)
-        clientId = data.clientId
-    }
-    else if(data.command === 'movePlayer'){
-        console.log('got "movePlayer"', data)
-        let player = players[data.clientId]
-        if(!player){
-            console.log(`Could not find any player with ID: ${data.clientId}`)
-            return
-        }
-        
-        player.rect.x = data.x
-        player.rect.y = data.y
-    }
-    else if(data.command === 'createPlayer'){
-        console.log('got "createPlayer"', data)
-        if(!!players[data.clientId]) return
-        
-        players[data.clientId] = {
-            rect: {
-                x: data.x,
-                y: data.y,
-                w: data.w,
-                h: data.h
-            },
-            speed: data.speed,
-            color: data.color,
-            clientId: data.clientId
-        }
-    }
-    else if(data.command === 'requestPlayer'){
-        console.log('got "requestPlayer"', data)
-        let player = players[clientId]
-        socket.emit('agge', JSON.stringify({
-            command: 'responsePlayer',
-            x: player.rect.x,
-            y: player.rect.y,
-            w: player.rect.w,
-            h: player.rect.h,
-            speed: player.speed,
-            color: player.color,
-            clientId: player.clientId
-        }))
-    }
-})
+let keysPressed = {}
 
 window.onkeydown = function (event) {
     let key = String.fromCharCode(event.keyCode).toLowerCase()
-    let player = players[clientId]
-    if(!player) {
-        console.log('Player not defined.')
-        return
-    }
-    switch (key) {
-        case "w":
-            player.rect.y -= player.speed
-            break
-        case "a":
-            player.rect.x -= player.speed
-            break
-        case "s":
-            player.rect.y += player.speed
-            break
-        case "d":
-            player.rect.x += player.speed
-            break
-        default:
-            console.log(key);
-    }
-    socket.emit('agge', JSON.stringify({
-        command: 'movePlayer',
-        x: player.rect.x,
-        y: player.rect.y
-    }))
-    console.log('movedPlayer')
-    if (key === 'CTRL_C') {
-        process.exit()
+    keysPressed[key] = true
+}
+
+window.onkeyup = function (event) {
+    let key = String.fromCharCode(event.keyCode).toLowerCase()
+    if (key in keysPressed) {
+        delete keysPressed[key]
     }
 }
+
+let core = Logic({
+    store,
+    keysPressed
+})
 
 function run(state, lastRun) {
     let now = Date.now() / 1000
     let delta = now - lastRun
 
-    setColor(0,0,0)
-    clear()
+    core.run(delta)
+    core.draw()
 
     ctx.font = '15px Arial'
     ctx.fillText('Holy moly', 10, 10);
-    
-    players.forEach(player => {
-        let rect = player.rect
-        let color = player.color
-        setColor({
-            r: color[0],
-            g: color[1],
-            b: color[2]
-        })
-        console.log(`Player ${player.clientId}: rect${JSON.stringify(rect)}`)
-        ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
-    })
 
     requestAnimationFrame(() => run(state, now))
-}
-
-function setColor({ r, g, b }){
-    ctx.fillStyle = `rgb(${r},${g},${b})`
-}
-
-function clear() {
-    ctx.clearRect(0,0,canvas.width,canvas.height)
 }
 
 function inSpan(a, b, c) {
