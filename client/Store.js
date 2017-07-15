@@ -15,11 +15,12 @@ module.exports = function () {
             players: {},
             user: {},
             houses: {},
-            persons: {}
+            persons: {},
+            terrain: {},
         },
         actions: {},
         selector,
-        setter
+        setter,
     }
     
     function getState() {
