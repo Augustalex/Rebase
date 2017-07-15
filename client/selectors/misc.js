@@ -7,5 +7,10 @@ module.exports = {
         return flatten(Object.keys(state.persons || {}).map(key => {
             return state.persons[key] || []
         }))
+    },
+    getAllEnemies(state, { clientId }) {
+        return flatten(Object.keys(state.persons || {}).map(key => {
+            return state.persons[key] || []
+        })).filter(p => p.clientId !== clientId)
     }
 }
