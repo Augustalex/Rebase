@@ -1,4 +1,5 @@
 let modules = [
+    require('./Terrain.js'),
     require('./Persons.js'),
     require('./Houses.js'),
     require('./Players.js'),

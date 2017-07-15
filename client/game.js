@@ -28,7 +28,8 @@ window.onkeyup = function (event) {
 
 let core = Logic({
     store,
-    keysPressed
+    keysPressed,
+    ctx,
 })
 
 function run(state, lastRun) {

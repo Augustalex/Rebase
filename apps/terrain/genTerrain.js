@@ -90,7 +90,7 @@ function genTerrain(seed) {
 
 	return maps.primary.zip(maps.secondary, (x, y, p, s) => {
 		return createType(p, s, seaLvl)
-	})
+	}).toJS()
 }
 
 module.exports = genTerrain

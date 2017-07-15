@@ -49,6 +49,13 @@ function Matrix(w, h) {
 		}
 		return str
 	}
+	function toJS() {
+		return {
+			w: w,
+			h: h,
+			m: m,
+		}
+	}
 	return {
 		getW,
 		getH,
