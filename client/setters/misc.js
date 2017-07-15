@@ -1,7 +1,6 @@
 module.exports = {
     addPerson(state, person) {
         let id = `${person.clientId}:${person.id}`
-        console.log('addPerson', person)
         state.persons[id] = person
         return state
     },
