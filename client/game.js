@@ -3,6 +3,7 @@ let Socket = require('./client/Socket.js')
 let Dispatcher = require('./client/Dispatcher.js')
 
 let localStore = Store()
+console.log(localStore)
 let socket = Socket('http://192.168.1.19:8081', { localStore })
 let store = Dispatcher({socket}).wrap(localStore)
 
@@ -82,5 +83,4 @@ function inBox(point, rect) {
     return inSpan(point.x, rect.x, rect.x + rect.w) && inSpan(point.y, rect.y, rect.y + rect.h)
 }
 
-store.actions.createPlayer()
 requestAnimationFrame(() => run({}, Date.now() / 1000))

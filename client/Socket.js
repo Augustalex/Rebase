@@ -1,5 +1,6 @@
 module.exports = function (url, deps){
-    let store = deps.store
+    let store = deps.localStore
+    console.log(store)
     let selector = store.selector
     let setter = store.setter
     
@@ -26,7 +27,7 @@ module.exports = function (url, deps){
     })
     
     socket.on('responsePlayer', player => {
-        store.actions.createPlayer(player)
+        store.actions.addPlayer(player)
     })
     
     return {

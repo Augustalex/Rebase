@@ -32,11 +32,11 @@ io.on('connection', (socket) => {
     clients[clientId] = {
         socket: socket,
     }
-    socket.on('command', (data) => broadcast(clientId, data))
-    socket.on('responsePlayer', (data) => {
+    socket.on('command', data => broadcast(clientId, data))
+    socket.on('responsePlayer', data => {
         broadcast(clientId, data)
     })
-    socket.on('requestPlayer', () => {
+    socket.on('requestPlayer', data => {
         broadcast(clientId, data)
     })
 

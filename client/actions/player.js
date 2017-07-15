@@ -1,5 +1,8 @@
 
 module.exports = {
+    addPlayer(state, player, { selector, setter }){
+        return setter.setPlayer(player)
+    },
     createPlayer(state, { clientId }, { selector, setter }){
         return setter.setPlayer({
             rect:{
