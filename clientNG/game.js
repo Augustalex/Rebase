@@ -9,12 +9,21 @@ Dispatcher({ socket }).wrap(store)
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext('2d')
 
+let keysPressed = {}
+
+window.onkeyup = function (event) {
+    let key = String.fromCharCode(event.keyCode).toLowerCase()
+    if(key in keysPressed){
+        delete keysPressed[key]
+    }
+}
 
 window.onkeydown = function (event) {
     let key = String.fromCharCode(event.keyCode).toLowerCase()
+    keysPressed[key] = true
     switch (key) {
         case "w":
-            store.actions['movePlayer']()
+            store.actions.movePlayerUp({ })
             break
         case "a":
             player.rect.x -= player.speed
