@@ -36,11 +36,11 @@ module.exports = function (deps) {
                 case 'p':
                     action = store.actions.spawnPerson
                     let baseColor = store.selector.getPlayerWithId(clientId).color
-                    let color = skinToneGenerator.variationOnBase(baseColor)
-                    console.log('baseVariation', color);
+                    let skinColor = skinToneGenerator.variationOnBase(baseColor)
+                    console.log('baseVariation', skinColor);
                     data = {
                         personId: `${Math.round(Math.random() * 100000)}`,
-                        color
+                        color: skinColor
                     }
                     break
             }
