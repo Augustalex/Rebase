@@ -65,6 +65,7 @@ function Matrix(w, h) {
 		map,
 		zip,
 		toString,
+		toJS
 	}
 }
 
