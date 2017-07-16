@@ -13,5 +13,4 @@ module.exports = {
         console.log('getUserPlayer' + JSON.stringify(player))
         return player
     }
-    
 }

@@ -35,6 +35,8 @@ module.exports = function () {
     Object.keys(allActions).forEach(action => {
         self.actions[action] = (params) => {
             let state = getState()
+            if(!state) throw new Error('State is undefined!')
+
             setState(allActions[action](state, params, {selector, setter}))
         }
     })

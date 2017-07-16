@@ -17,7 +17,9 @@ module.exports = function (deps) {
     
     Object.keys(originalSelectors).forEach(sel => {
         curriedSelectors[sel] = (params) => {
-            return originalSelectors[sel](getState(), params)
+            let state = getState();
+            if(!state) throw new Error('State is undefined!')
+            return originalSelectors[sel](state, params)
         }
     })
     return curriedSelectors

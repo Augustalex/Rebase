@@ -13,30 +13,41 @@ module.exports = function (deps) {
     function run(delta) {
         let clientId = store.selector.getClientId()
         Object.keys(keysPressed).forEach(key => {
-            let data = { delta, clientId }
+            let action = null
+            let data = {}
             switch (key) {
                 case 'w':
-                    store.actions.movePlayerUp(data)
+                    action = store.actions.movePlayerUp
                     break
                 case 'a':
-                    store.actions.movePlayerLeft(data)
+                    action = store.actions.movePlayerLeft
                     break
                 case 's':
-                    store.actions.movePlayerDown(data)
+                    action = store.actions.movePlayerDown
                     break
                 case 'd':
-                    store.actions.movePlayerRight(data)
+                    action = store.actions.movePlayerRight
                     break
                 case 'h':
-                    store.actions.createHouse(data)
+                    action = store.actions.createHouse
                     break
                 case 'p':
-                    store.actions.spawnPerson({
-                        clientId,
+                    action = store.actions.spawnPerson
+                    data = {
                         personId: `${Math.round(Math.random() * 100000)}`,
                         color: [rand(255), rand(255), rand(255)]
-                    })
+                    }
                     break
+            }
+            if (action) {
+                let player = store.selector.getPlayerWithId(clientId)
+                action(Object.assign(data, {
+                    delta,
+                    clientId,
+                    playerPos: { x: player.rect.x, y: player.rect.y },
+                    playerColor: player.color,
+                    playerSpeed: player.speed
+                }))
             }
         })
     }
@@ -54,7 +65,7 @@ module.exports = function (deps) {
             ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
 
             let details = player.details
-            for(let detail of details){
+            for (let detail of details) {
                 let color = detail.color
                 setColor({
                     r: color[0],
