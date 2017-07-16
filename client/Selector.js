@@ -1,8 +1,8 @@
 let playerSelectors = require('./selectors/player.js')
 let userSelectors = require('./selectors/user.js')
 let buildingSelectors = require('./selectors/building.js')
-let terrainSelectors = require('./selectors/terrain.js')
 let miscSelectors = require('./selectors/misc.js')
+let terrainSelectors = require('./selectors/terrain.js')
 
 module.exports = function (deps) {
     let getState = deps.getState
