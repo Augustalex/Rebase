@@ -17,8 +17,16 @@ function foldOctaves(octaves, weight) {
 function now() {
 	return new Date().getTime()
 }
+function getSeed(seed) {
+	if(typeof seed === "number") {
+		return seed
+	}
+	else {
+		return now()
+	}
+}
 function genHeightmap(options) {
-	const seed = options.seed || now()
+	const seed = getSeed(options.seed)
 
 	const minOctave = options.octaves.min
 	const maxOctave = options.octaves.max
