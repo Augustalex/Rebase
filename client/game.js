@@ -7,7 +7,8 @@ let localStore = Store()
 let socket = Socket('http://192.168.1.19:8081', { localStore })
 // let socket = Socket('http://192.168.1.21:8081', {localStore})
 // let socket = Socket('http://127.0.0.1:8081', {localStore})
-let store = Dispatcher({ socket }).wrap(localStore)
+let store = Dispatcher({ socket }).wrapActions(localStore)
+// let store = Dispatcher({ socket }).wrapSetters(localStore)
 
 let canvas = document.getElementById('canvas')
 let ctx = canvas.getContext('2d')
@@ -28,6 +29,7 @@ window.onkeyup = function (event) {
 
 let core = Logic({
     store,
+    localStore,
     keysPressed,
     ctx,
 })

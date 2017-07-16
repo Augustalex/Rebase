@@ -16,5 +16,11 @@ module.exports = {
         person.rect.x = position.x
         person.rect.y = position.y
         return state
+    },
+    setPersonAttackTarget(state, { personKey, targetKey }) {
+        let person = state.persons[personKey]
+        person.targetKey = targetKey
+        console.log('setPersonAttackTarget', personKey, targetKey);
+        return state
     }
 }

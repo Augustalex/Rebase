@@ -1,7 +1,10 @@
 module.exports = function (deps) {
 
     let store = deps.store
+    let localStore = deps.localStore
     let setColor = deps.setColor
+
+    let justifyCounter = 0
 
     return {
         run,
@@ -11,12 +14,59 @@ module.exports = function (deps) {
     function run(delta) {
         let persons = store.selector.getAllPersons()
         let clientId = store.selector.getClientId()
+
+        //This is not a good idea and will be removed once the real problem is resolved..
+        if(justifyCounter === 1000){
+            let yours = persons.filter(p => p.clientId === clientId)
+            for(let person of yours) {
+                store.actions.adjustPersonPosition({
+                    clientId: person.clientId,
+                    personId: person.id,
+                    position: { x: person.rect.x, y: person.rect.y }
+                })
+            }
+            justifyCounter = 0
+        }
+        else{
+            justifyCounter++
+        }
+
         let enemies = persons.filter(p => p.clientId !== clientId)
         for (let person of persons) {
-            if (enemies.length) {
+            if ('targetKey' in person) {
+                let targetPos = store.selector.getPersonById({ key: person.targetKey }).rect
+                let personPos = person.rect
+                let direction = Math.atan2(targetPos.y - personPos.y, targetPos.x - personPos.x);
+
+                let x = personPos.x
+                let y = personPos.y
+
+                let xDistance = Math.abs(targetPos.x - personPos.x);
+                if (xDistance > 5) {
+                    x = personPos.x + person.speed * delta * Math.cos(direction)
+                }
+
+                let yDistance = Math.abs(targetPos.y - personPos.y);
+                if (yDistance > 5) {
+                    y = personPos.y + person.speed * delta * Math.sin(direction)
+                }
+
+                if (xDistance <= 5 && yDistance <= 5) {
+                    console.log('Collided!');
+                }
+                localStore.actions.adjustPersonPosition({
+                    clientId: person.clientId,
+                    personId: person.id,
+                    position: { x, y }
+                })
+            }
+            else if (enemies.length && clientId === person.clientId) {
                 let target = enemies[Math.floor(enemies.length * Math.random())]
-                store.actions.personAttack({
-                    
+                store.actions.personAttackTarget({
+                    clientId: person.clientId,
+                    personId: person.id,
+                    targetClientId: target.clientId,
+                    targetId: target.id
                 })
             }
             else {
@@ -50,9 +100,9 @@ module.exports = function (deps) {
             personId: person.id,
             startedWalking: now,
             walkTime: Math.round(Math.random() * 10000),
-            direction: Math.random() * Math.PI * 2
+            direction: Math.round(Math.random() * Math.PI * 2 * 1000) / 1000
         });
-        store.actions.adjustPersonPosition({
+        localStore.actions.adjustPersonPosition({
             clientId: person.clientId,
             personId: person.id,
             position: { x: person.rect.x, y: person.rect.y }
@@ -60,7 +110,12 @@ module.exports = function (deps) {
     }
 
     function move(person, delta) {
-        person.rect.x += person.speed * delta * Math.cos(person.direction)
-        person.rect.y += person.speed * delta * Math.sin(person.direction)
+        let x = person.rect.x + person.speed * delta * Math.cos(person.direction)
+        let y = person.rect.y + person.speed * delta * Math.sin(person.direction)
+        localStore.actions.adjustPersonPosition({
+            clientId: person.clientId,
+            personId: person.id,
+            position: { x, y }
+        })
     }
 }

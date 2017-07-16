@@ -8,13 +8,15 @@ let modules = [
 module.exports = function (deps) {
 
     let store = deps.store
+    let localStore = deps.localStore
     let keysPressed = deps.keysPressed
 
     let moduleDeps = {
         setColor,
         store,
+        localStore,
         keysPressed,
-        rand
+        rand,
     }
 
     let loadedModules = modules.map(c => c(moduleDeps))

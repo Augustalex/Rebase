@@ -3,6 +3,10 @@ const flatten = list => list.reduce(
 );
 
 module.exports = {
+    getPersonById(state, { key }) {
+        let person = state.persons[key];
+        return person
+    },
     getAllPersons(state) {
         return flatten(Object.keys(state.persons || {}).map(key => {
             return state.persons[key] || []
