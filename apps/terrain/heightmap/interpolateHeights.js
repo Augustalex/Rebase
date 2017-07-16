@@ -7,22 +7,23 @@ function interpolateHeights(w, h, heights) {
 	const dy = h / (heights.getH() - 1)
 
 	return Matrix(w, h).map((x, y) => {
-		const bix = Math.floor(x / dx)
-		const biy = Math.floor(y / dy)
+		const nx = x / dx
+		const ny = y / dy
+
+		const bix = Math.floor(nx)
+		const biy = Math.floor(ny)
 		const tix = bix + 1
 		const tiy = biy + 1
+
+		const lx = nx - bix
+		const ly = ny - biy
 
 		const bl = heights.get(bix, biy)
 		const br = heights.get(tix, biy)
 		const tl = heights.get(bix, tiy)
 		const tr = heights.get(tix, tiy)
 
-		const bx = bix * dx
-		const by = biy * dy
-		const tx = tix * dx
-		const ty = tiy * dy
-
-		return interpolate(bl, br, tl, tr, bx, by, tx, ty, x, y)
+		return interpolate(bl, br, tl, tr, lx, ly)
 	})
 }
 
