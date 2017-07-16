@@ -12,14 +12,14 @@ function genIntHeight(x, y, o, s) {
 	return h
 }
 function genNormalHeight(x, y, o) {
-	return genIntHeight(x, y, o) / Math.pow(2, 31) - 1
+	return genIntHeight(x, y, o) / Math.pow(2, 32)
 }
 function atEdge(x, s) {
 	return x === 0 || x === s - 1
 }
 function genHeight(x, y, w, h, o) {
 	if(atEdge(x, h) || atEdge(y, w)) {
-		return -1
+		return 0
 	}
 	else {
 		return genNormalHeight(x, y, o)
