@@ -33,6 +33,6 @@ function createHat(origW, origH) {
     return hatGenerator.generateHat(origW, origH)
 }
 
-function createClothes(origW, origH){
-    return clothesGenerator.generate(origW, origH)
+function createClothes(shirtColor, origW, origH){
+    return clothesGenerator.generate(shirtColor, origW, origH)
 }

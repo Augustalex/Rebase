@@ -1,3 +1,4 @@
+let detailsHelper = require('../misc/detailsHelper.js')
 
 module.exports = {
     spawnPerson(state, {clientId, personId, color, playerPos }, { setter }){
@@ -14,6 +15,7 @@ module.exports = {
                     h: 2
                 }]
             },
+            details: detailsHelper.createClothes(color, 10, 10),
             color,
             speed: 10,
             id: personId,
