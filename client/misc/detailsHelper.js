@@ -2,8 +2,11 @@
  * Created by josef on 7/16/17.
  */
 
+let hatGenerator = require('./hatGenerator.js')
+
 module.exports = {
-    createFlag
+    createFlag,
+    createHat
 }
 
 function createFlag(color, origW, origH) {
@@ -21,4 +24,8 @@ function createFlag(color, origW, origH) {
         h: 6,
         color: color
     }]
+}
+
+function createHat(origW, origH) {
+    return hatGenerator.generateHat(origW, origH)
 }

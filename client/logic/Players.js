@@ -72,7 +72,12 @@ module.exports = function (deps) {
                     g: color[1],
                     b: color[2]
                 })
-                ctx.fillRect(rect.x + detail.relX, rect.y + detail.relY, detail.w, detail.h)
+                let w = detail.w || (rect.w * detail.relW)
+                let h = detail.h || (rect.h * detail.relH)
+                let x = rect.x + detail.relX
+                let y = rect.y + detail.relY
+                console.log('detail', {x,y,w,h}, detail);
+                ctx.fillRect(x, y, w, h)
             }
         }
     }
