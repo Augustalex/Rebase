@@ -3,10 +3,13 @@
  */
 
 let hatGenerator = require('./hatGenerator.js')
+let clothesGenerator = require('./clothesGenerator.js')
 
 module.exports = {
     createFlag,
-    createHat
+    createHat,
+    Clothes
+
 }
 
 function createFlag(color, origW, origH) {
@@ -28,4 +31,8 @@ function createFlag(color, origW, origH) {
 
 function createHat(origW, origH) {
     return hatGenerator.generateHat(origW, origH)
+}
+
+function createClothes(origW, origH){
+    return clothesGenerator.generate(origW, origH)
 }
