@@ -70,7 +70,7 @@ function createType(p, s, seaLvl) {
 	if(p < seaLvl) {
 		return createWaterType(p, s)
 	}
-	else if(p < seaLvl + 0.08) {
+	else if(p < seaLvl * 1.2) {
 		return createBeachType(s)
 	}
 	else {
