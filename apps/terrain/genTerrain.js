@@ -77,6 +77,17 @@ function createType(p, s, seaLvl) {
 		return createGrassType(s)
 	}
 }
+function createPixel(p, s, seaLvl) {
+	const pixel = createType(p, s, seaLvl)
+	return {
+		type: pixel.type,
+		color: {
+			r: Math.round(pixel.color.r),
+			g: Math.round(pixel.color.g),
+			b: Math.round(pixel.color.b),
+		}
+	}
+}
 function average(map) {
 	let total = 0
 	map.foreach((x, y, v) => {
@@ -89,7 +100,7 @@ function genTerrain(seed) {
 	const seaLvl = average(maps.primary) * 1.05
 
 	return maps.primary.zip(maps.secondary, (x, y, p, s) => {
-		return createType(p, s, seaLvl)
+		return createPixel(p, s, seaLvl)
 	}).toJS()
 }
 
