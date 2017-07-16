@@ -8,7 +8,7 @@ let clothesGenerator = require('./clothesGenerator.js')
 module.exports = {
     createFlag,
     createHat,
-    Clothes
+    createClothes
 
 }
 
