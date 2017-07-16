@@ -53,7 +53,7 @@ function Matrix(w, h) {
 		return {
 			w: w,
 			h: h,
-			m: m,
+			m: matrix,
 		}
 	}
 	return {

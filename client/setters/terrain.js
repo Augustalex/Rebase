@@ -1,7 +1,8 @@
 
 module.exports = {
 	setTerrain(state, terrain) {
-		state.terrain = terrain
+        console.log('setTerrain', terrain);
+        state.terrain = terrain
 		return state
 	}
 }

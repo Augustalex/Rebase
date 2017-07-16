@@ -11,7 +11,8 @@ module.exports = function (deps) {
  	}
  	function draw() {
  		let terrain = store.selector.getTerrain();
- 		for(let y = 0; y < terrain.h; y++) {
+        console.log(terrain);
+        for(let y = 0; y < terrain.h; y++) {
  			for(let x = 0; x < terrain.w; x++) {
  				let pixel = terrain.m[x + y * w]
  				setColor(color)

@@ -3,8 +3,9 @@ let Setter = require('./Setter.js')
 let playerActions = require('./actions/player.js')
 let buildingActions = require('./actions/building.js')
 let miscActions = require('./actions/misc.js')
+let terrainActions = require('./actions/terrain.js')
 
-let allActions = Object.assign({}, playerActions, buildingActions, miscActions)
+let allActions = Object.assign({}, playerActions, buildingActions, miscActions, terrainActions)
 
 module.exports = function () {
     let selector = Selector({getState})

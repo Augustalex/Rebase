@@ -1,9 +1,13 @@
-let playerSetters = require('./setters/player.js')
-let userSetters = require('./setters/user.js')
-let buildingSetters = require('./setters/building.js')
-let miscSetters = require('./setters/misc.js')
+let setters = [
+    require('./setters/player.js'),
+    require('./setters/user.js'),
+    require('./setters/building.js'),
+    require('./setters/misc.js'),
+    require('./setters/terrain.js')
+]
 
 module.exports = function (deps) {
-    let originalSetters = Object.assign({}, playerSetters, userSetters, buildingSetters, miscSetters)
-    return originalSetters
+    let res = {}
+    setters.forEach(o => { res = Object.assign(res, o) })
+    return res
 }
