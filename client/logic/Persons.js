@@ -110,6 +110,21 @@ module.exports = function (deps) {
                 b: color[2]
             });
             ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
+
+            let details = person.details
+            for (let detail of details) {
+                let color = detail.color
+                setColor({
+                    r: color[0],
+                    g: color[1],
+                    b: color[2]
+                })
+                let w = detail.w || (rect.w * detail.relW)
+                let h = detail.h || (rect.h * detail.relH)
+                let x = rect.x + detail.relX
+                let y = rect.y + detail.relY
+                ctx.fillRect(x, y, w, h)
+            }
         }
     }
 
