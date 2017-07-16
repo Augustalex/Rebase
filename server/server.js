@@ -17,10 +17,11 @@ function genClientId() {
 }
 
 function broadcast(channel, clientId, message) {
-    if (DEBUG) console.log(`broadcast(${channel}, ${clientId}, ${JSON.stringify(message)})`)
+    // if (DEBUG) console.log(`broadcast(${channel}, ${clientId}, ${JSON.stringify(message)})`)
+    // if (DEBUG) console.log(`broadcast(${channel}, ${clientId})`)
     for (let otherClientId in clients) {
         if (clientId !== otherClientId) {
-            if (DEBUG) console.log(`sending to ${otherClientId} with data ${JSON.stringify(message)}`)
+            // if (DEBUG) console.log(`sending to ${otherClientId} with data ${JSON.stringify(message)}`)
             const client = clients[otherClientId]
             client.socket.emit(channel, message)
         }
@@ -34,6 +35,7 @@ io.on('connection', (socket) => {
     }
     socket.on('command', data => {
         log.push(data)
+        if(DEBUG) console.log(`sent command: ${data.command}`)
         broadcast('command', clientId, data)
     })
 

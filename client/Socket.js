@@ -1,3 +1,5 @@
+let DEBUG = true
+
 module.exports = function (url, deps){
     let store = deps.localStore
     let selector = store.selector
@@ -20,6 +22,7 @@ module.exports = function (url, deps){
     })
     
     socket.on('command', obj => {
+        if(DEBUG) console.log(`Got command ${obj.command} with data: ${JSON.stringify(obj.data)}`)
         if(obj.command === 'addPlayer' && selector.getPlayerWithId(obj.data.clientId)) return
         
         store.actions[obj.command](obj.data)

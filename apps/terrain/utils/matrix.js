@@ -53,7 +53,7 @@ function Matrix(w, h) {
 		return {
 			w: w,
 			h: h,
-			m: m,
+			m: matrix,
 		}
 	}
 	return {
@@ -65,6 +65,7 @@ function Matrix(w, h) {
 		map,
 		zip,
 		toString,
+		toJS
 	}
 }
 
