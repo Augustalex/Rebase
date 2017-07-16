@@ -1,3 +1,5 @@
+let skinToneGenerator = require('../misc/skinToneGenerator.js')
+
 module.exports = function (deps) {
 
     let store = deps.store
@@ -33,9 +35,12 @@ module.exports = function (deps) {
                     break
                 case 'p':
                     action = store.actions.spawnPerson
+                    let baseColor = store.selector.getPlayerWithId(clientId).color
+                    let color = skinToneGenerator.variationOnBase(baseColor)
+                    console.log('baseVariation', color);
                     data = {
                         personId: `${Math.round(Math.random() * 100000)}`,
-                        color: [rand(255), rand(255), rand(255)]
+                        color
                     }
                     break
             }
@@ -76,7 +81,6 @@ module.exports = function (deps) {
                 let h = detail.h || (rect.h * detail.relH)
                 let x = rect.x + detail.relX
                 let y = rect.y + detail.relY
-                console.log('detail', {x,y,w,h}, detail);
                 ctx.fillRect(x, y, w, h)
             }
         }

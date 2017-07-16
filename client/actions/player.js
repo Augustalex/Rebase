@@ -1,23 +1,24 @@
 let detailsHelper = require('../misc/detailsHelper.js')
+let skinToneGenerator = require('../misc/skinToneGenerator.js')
 
 module.exports = {
     addPlayer(state, player, { setter }){
         return setter.setPlayer(state, player)
     },
     createPlayer(state, { clientId }, { setter }){
+        let color = skinToneGenerator.variationOnBase(skinToneGenerator.generate())
         let playerW = 10
         let playerH = 16
         let hatDetails = detailsHelper.createHat(playerW, playerH)
-        console.log(hatDetails);
         return setter.setPlayer(state, {
             rect:{
-                x: 50,
-                y: 50,
+                x: 1000,
+                y: 1000,
                 w: playerW,
                 h: playerH,
             },
             details: hatDetails,
-            color:[0, 0, 255],
+            color,
             speed: 25,
             clientId
         })

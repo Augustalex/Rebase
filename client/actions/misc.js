@@ -38,5 +38,10 @@ module.exports = {
             personKey: `${clientId}:${personId}`,
             targetKey: `${targetClientId}:${targetId}`
         })
+    },
+    personKillTarget(state, { targetClientId, targetId }, { setter }) {
+        return setter.setPersonDead(state, {
+            key: `${targetClientId}:${targetId}`
+        })
     }
 }

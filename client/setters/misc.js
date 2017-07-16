@@ -20,7 +20,11 @@ module.exports = {
     setPersonAttackTarget(state, { personKey, targetKey }) {
         let person = state.persons[personKey]
         person.targetKey = targetKey
-        console.log('setPersonAttackTarget', personKey, targetKey);
+        return state
+    },
+    setPersonDead(state, { key }) {
+        console.log('Set person dead: ' + key);
+        state.persons[key].dead = true
         return state
     }
 }

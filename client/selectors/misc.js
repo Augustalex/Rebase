@@ -5,16 +5,20 @@ const flatten = list => list.reduce(
 module.exports = {
     getPersonById(state, { key }) {
         let person = state.persons[key];
+        if(person.dead) return
         return person
     },
     getAllPersons(state) {
         return flatten(Object.keys(state.persons || {}).map(key => {
             return state.persons[key] || []
-        }))
+        })).filter(p => !p.dead)
     },
     getAllEnemies(state, { clientId }) {
         return flatten(Object.keys(state.persons || {}).map(key => {
             return state.persons[key] || []
-        })).filter(p => p.clientId !== clientId)
+        })).filter(p => {
+            p.clientId !== clientId
+            && !p.dead
+        })
     }
 }

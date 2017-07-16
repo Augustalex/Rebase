@@ -16,7 +16,7 @@ module.exports = function (deps) {
         let clientId = store.selector.getClientId()
 
         //This is not a good idea and will be removed once the real problem is resolved..
-        if(justifyCounter === 1000){
+        if(justifyCounter === 100){
             let yours = persons.filter(p => p.clientId === clientId)
             for(let person of yours) {
                 store.actions.adjustPersonPosition({
@@ -31,10 +31,21 @@ module.exports = function (deps) {
             justifyCounter++
         }
 
+        console.log('n persons', persons.length);
+
         let enemies = persons.filter(p => p.clientId !== clientId)
         for (let person of persons) {
+            if(person.dead){
+                console.log('FOUND A DEAD GUY!');
+            }
             if ('targetKey' in person) {
-                let targetPos = store.selector.getPersonById({ key: person.targetKey }).rect
+                let target = store.selector.getPersonById({ key: person.targetKey });
+                if(!target) {
+                    delete person['targetKey']
+                    return
+                }
+
+                let targetPos = target.rect
                 let personPos = person.rect
                 let direction = Math.atan2(targetPos.y - personPos.y, targetPos.x - personPos.x);
 
@@ -53,6 +64,14 @@ module.exports = function (deps) {
 
                 if (xDistance <= 5 && yDistance <= 5) {
                     console.log('Collided!');
+                    let won = Math.random() > 0.5
+
+                    let targetClientId = won ? target.clientId : person.clientId
+                    let targetId = won ? target.id : person.id
+                    store.actions.personKillTarget({
+                        targetClientId: targetClientId,
+                        targetId: targetId
+                    })
                 }
                 localStore.actions.adjustPersonPosition({
                     clientId: person.clientId,
