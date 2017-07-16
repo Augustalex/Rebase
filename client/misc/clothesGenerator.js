@@ -12,7 +12,7 @@ function generate(shirtColor, origW, origH) {
     return [
         {
             relX: 0,
-            relY: 3,
+            relY: 5,
             w: origW,
             h: origH / 3,
             color: shirtColor

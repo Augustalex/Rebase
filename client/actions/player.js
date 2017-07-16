@@ -6,7 +6,7 @@ module.exports = {
         return setter.setPlayer(state, player)
     },
     createPlayer(state, { clientId }, { setter }){
-        let color = skinToneGenerator.variationOnBase(skinToneGenerator.generate())
+        let color = [255, 0, 0]//let color = skinToneGenerator.variationOnBase(skinToneGenerator.generate())
         let playerW = 10
         let playerH = 16
         let hatDetails = detailsHelper.createHat(playerW, playerH)
