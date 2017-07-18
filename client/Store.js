@@ -1,11 +1,15 @@
 let Selector = require('./Selector.js')
 let Setter = require('./Setter.js')
-let playerActions = require('./actions/player.js')
-let buildingActions = require('./actions/building.js')
-let miscActions = require('./actions/misc.js')
-let terrainActions = require('./actions/terrain.js')
 
-let allActions = Object.assign({}, playerActions, buildingActions, miscActions, terrainActions)
+let items = [
+    require('./storeItems/players.js'),
+    require('./storeItems/users.js'),
+    require('./storeItems/buildings.js'),
+    require('./storeItems/persons.js'),
+    require('./storeItems/terrain.js')
+]
+let allActions = {}
+items.forEach(o => Object.assign(allActions, o.actions))
 
 module.exports = function () {
     let selector = Selector({getState})
@@ -18,6 +22,7 @@ module.exports = function () {
             houses: {},
             persons: {},
             terrain: {},
+            mills: {}
         },
         actions: {},
         selector,

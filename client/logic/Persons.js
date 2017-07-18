@@ -31,8 +31,6 @@ module.exports = function (deps) {
             justifyCounter++
         }
 
-        console.log('n persons', persons.length);
-
         let enemies = persons.filter(p => p.clientId !== clientId)
         for (let person of persons) {
             if(person.dead){
@@ -80,21 +78,10 @@ module.exports = function (deps) {
                 })
             }
             else if (enemies.length && clientId === person.clientId) {
-                let target = enemies[Math.floor(enemies.length * Math.random())]
-                store.actions.personAttackTarget({
-                    clientId: person.clientId,
-                    personId: person.id,
-                    targetClientId: target.clientId,
-                    targetId: target.id
-                })
+                pickNewTarget(person, enemies)
             }
             else {
-                let now = Date.now();
-                let elapsedTime = now - person.startedWalking;
-                if (elapsedTime > person.walkTime) {
-                    beginWalk(person, now)
-                }
-                move(person, delta)
+                walk(person, delta)
             }
         }
     }
@@ -128,6 +115,36 @@ module.exports = function (deps) {
         }
     }
 
+    function pickNewTarget(person, enemies) {
+        let target = enemies[Math.floor(enemies.length * Math.random())]
+        store.actions.personAttackTarget({
+            clientId: person.clientId,
+            personId: person.id,
+            targetClientId: target.clientId,
+            targetId: target.id
+        })
+    }
+
+    function walk(person, delta) {
+        let now = Date.now();
+        let elapsedTime = now - person.startedWalking;
+        if (elapsedTime > person.walkTime) {
+            beginWalk(person, now)
+        }
+        let x = person.rect.x + person.speed * delta * Math.cos(person.direction)
+        let y = person.rect.y + person.speed * delta * Math.sin(person.direction)
+        localStore.actions.adjustPersonPosition({
+            clientId: person.clientId,
+            personId: person.id,
+            position: { x, y }
+        })
+        store.actions.adjustPersonPosition({
+            clientId: person.clientId,
+            personId: person.id,
+            position: { x: person.rect.x, y: person.rect.y }
+        })
+    }
+
     function beginWalk(person, now) {
         store.actions.walkInDirection({
             clientId: person.clientId,
@@ -140,16 +157,6 @@ module.exports = function (deps) {
             clientId: person.clientId,
             personId: person.id,
             position: { x: person.rect.x, y: person.rect.y }
-        })
-    }
-
-    function move(person, delta) {
-        let x = person.rect.x + person.speed * delta * Math.cos(person.direction)
-        let y = person.rect.y + person.speed * delta * Math.sin(person.direction)
-        localStore.actions.adjustPersonPosition({
-            clientId: person.clientId,
-            personId: person.id,
-            position: { x, y }
         })
     }
 }

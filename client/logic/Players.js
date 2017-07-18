@@ -33,6 +33,9 @@ module.exports = function (deps) {
                 case 'h':
                     action = store.actions.createHouse
                     break
+                case 'm':
+                    action = store.actions.createMill
+                    break
                 case 'p':
                     action = store.actions.spawnPerson
                     let baseColor = store.selector.getPlayerWithId(clientId).color
