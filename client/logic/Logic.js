@@ -2,6 +2,7 @@ let modules = [
     require('./Terrain.js'),
     require('./Persons.js'),
     require('./Houses.js'),
+    require('./Mills.js'),
     require('./Players.js'),
 ]
 

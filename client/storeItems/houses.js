@@ -1,3 +1,5 @@
+let detailsHelper = require('../misc/detailsHelper.js')
+
 module.exports = {
     actions: {
         createHouse(state, { clientId, playerPos, playerColor }, { setter }){
@@ -16,24 +18,6 @@ module.exports = {
                 color: [153, 76, 0],
                 clientId
             })
-        },
-        createMill(state, { clientId, playerPos, playerColor }, { setter }){
-            let playerW = 25
-            let playerH = 25
-            let flagDetails = detailsHelper.createFlag(playerColor, playerW, playerH)
-
-            return setter.addHouse(state, {
-                rect: {
-                    x: playerPos.x,
-                    y: playerPos.y,
-                    w: playerW,
-                    h: playerH
-                },
-                details: flagDetails,
-                color: [153, 76, 153],
-                clientId,
-                productivity: 10
-            })
         }
     },
     getters: {
@@ -41,18 +25,20 @@ module.exports = {
             return flatten(Object.keys(state.houses || {}).map(key => {
                 return state.houses[key] || []
             }))
-        },
-        getAllMillsForPlayer(state, clientId) {
-            return state.houses[clientId] || []
         }
     },
     setters: {
-        addHouse(state, house) {
-            state.houses[house.clientId] = state.houses[house.clientId] || []
-            state.houses[house.clientId].push(house)
-            return state
+        addHouse(state, entity) {
+            return addEntityByClientId(state, { stateKey: 'houses', entity })
         }
     }
+}
+
+function addEntityByClientId(state, { stateKey, entity }) {
+    let clientId = entity.clientId
+    state[stateKey][clientId] = state[stateKey][clientId] || []
+    state[stateKey][clientId].push(entity)
+    return state
 }
 
 function flatten(list) {

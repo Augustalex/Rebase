@@ -4,16 +4,22 @@ let Setter = require('./Setter.js')
 let items = [
     require('./storeItems/players.js'),
     require('./storeItems/users.js'),
-    require('./storeItems/buildings.js'),
+    require('./storeItems/houses.js'),
+    require('./storeItems/farming/mills.js'),
+    require('./storeItems/farming/corn.js'),
     require('./storeItems/persons.js'),
     require('./storeItems/terrain.js')
 ]
 let allActions = {}
 items.forEach(o => Object.assign(allActions, o.actions))
+let getters = {}
+items.forEach(o => Object.assign(getters, o.getters))
+let setters = {}
+items.forEach(o => Object.assign(setters, o.setters))
 
 module.exports = function () {
-    let selector = Selector({getState})
-    let setter = Setter({getState})
+    let selector = Selector({getState, getters })
+    let setter = Setter({getState, setters })
     
     let self = {
         state: {
@@ -22,7 +28,8 @@ module.exports = function () {
             houses: {},
             persons: {},
             terrain: {},
-            mills: {}
+            mills: {},
+            corn: {}
         },
         actions: {},
         selector,
