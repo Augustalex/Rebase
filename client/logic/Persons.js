@@ -15,77 +15,81 @@ module.exports = function (deps) {
         let clientId = store.selector.getClientId()
 
         for (let person of persons) {
-            if (person.dead) {
-                console.log('FOUND A DEAD GUY!');
+            runPerson(person, clientId, persons, delta)
+        }
+    }
+
+    function runPerson(person, clientId, persons, delta) {
+        if (person.dead) {
+            console.log('FOUND A DEAD GUY!');
+        }
+        if ('targetKey' in person) {
+            let target
+            let action
+            if (person.mode === 'attack') {
+                target = store.selector.getPersonById({ key: person.targetKey });
+                action = () => {
+                    let won = Math.random() > 0.5
+
+                    let targetClientId = won ? target.clientId : person.clientId
+                    let targetId = won ? target.id : person.id
+                    store.actions.personKillTarget({
+                        targetClientId: targetClientId,
+                        targetId: targetId
+                    })
+                }
             }
-            if ('targetKey' in person) {
-                let target
-                let action
-                if (person.mode === 'attack') {
-                    target = store.selector.getPersonById({ key: person.targetKey });
-                    action = () => {
-                        let won = Math.random() > 0.5
-
-                        let targetClientId = won ? target.clientId : person.clientId
-                        let targetId = won ? target.id : person.id
-                        store.actions.personKillTarget({
-                            targetClientId: targetClientId,
-                            targetId: targetId
-                        })
-                    }
-                }
-                if (person.mode === 'farm') {
-                    target = store.selector.getCornById(person.targetKey)
-                    action = () => {
-                        console.log('GOT CORN!');
-                        store.actions.personHarvestCorn({
-                            clientId,
-                            personId: person.id,
-                            cornId: target.id
-                        })
-                        delete person['targetKey']
-                    }
-                }
-
-                if (!target) {
+            if (person.mode === 'farm') {
+                target = store.selector.getCornById(person.targetKey)
+                action = () => {
+                    console.log('GOT CORN!');
+                    store.actions.personHarvestCorn({
+                        clientId,
+                        personId: person.id,
+                        cornId: target.id
+                    })
                     delete person['targetKey']
                 }
-                else {
-                    moveAndActOnTarget({
-                        person,
-                        target,
-                        action,
-                        delta
-                    });
-                    return
-                }
             }
-            else if (clientId === person.clientId) {
-                let enemies = persons.filter(p => p.clientId !== clientId)
-                if (enemies.length) {
-                    let target = pickNewTarget(person, enemies)
-                    store.actions.personAttackTarget({
-                        clientId: person.clientId,
-                        personId: person.id,
-                        targetClientId: target.clientId,
-                        targetId: target.id
-                    })
-                    return
-                }
 
-                let corn = store.selector.getAllCornByClientId(clientId)
-                if (corn.length) {
-                    let target = pickNewTarget(person, corn)
-                    store.actions.personHarvest({
-                        clientId: person.clientId,
-                        personId: person.id,
-                        targetId: target.id
-                    })
-                    return
-                }
+            if (!target) {
+                delete person['targetKey']
             }
-            walk(person, delta)
+            else {
+                moveAndActOnTarget({
+                    person,
+                    target,
+                    action,
+                    delta
+                });
+                return
+            }
         }
+        else if (clientId === person.clientId) {
+            let enemies = persons.filter(p => p.clientId !== clientId)
+            if (enemies.length) {
+                let target = pickNewTarget(person, enemies)
+                store.actions.personAttackTarget({
+                    clientId: person.clientId,
+                    personId: person.id,
+                    targetClientId: target.clientId,
+                    targetId: target.id
+                })
+                return
+            }
+
+            let corn = store.selector.getAllCornByClientId(clientId)
+            if (corn.length) {
+                let target = pickNewTarget(person, corn)
+                store.actions.personHarvest({
+                    clientId: person.clientId,
+                    personId: person.id,
+                    targetId: target.id
+                })
+                return
+            }
+        }
+        walk(person, delta)
     }
 
     function draw() {
