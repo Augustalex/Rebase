@@ -2,7 +2,7 @@ let detailsHelper = require('../misc/detailsHelper.js')
 
 module.exports = {
     actions: {
-        createHouse(state, { clientId, playerPos, playerColor }, { setter }){
+        createHouse(state, { clientId, entityId, playerPos, playerColor }, { setter }){
             let playerW = 25
             let playerH = 25
             let flagDetails = detailsHelper.createFlag(playerColor, playerW, playerH)
@@ -16,7 +16,8 @@ module.exports = {
                 },
                 details: flagDetails,
                 color: [153, 76, 0],
-                clientId
+                clientId,
+                id: entityId
             })
         }
     },

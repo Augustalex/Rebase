@@ -2,7 +2,7 @@ let detailsHelper = require('../../misc/detailsHelper.js')
 
 module.exports = {
     actions: {
-        createMill(state, { clientId, playerPos, playerColor }, { setter }){
+        createMill(state, { clientId, entityId, playerPos, playerColor }, { setter }){
             let playerW = 25
             let playerH = 25
             let flagDetails = detailsHelper.createFlag(playerColor, playerW, playerH)
@@ -17,6 +17,7 @@ module.exports = {
                 details: flagDetails,
                 color: [153, 76, 153],
                 clientId,
+                id: entityId,
                 productivity: 25,
                 rangeFactor: 6
             })

@@ -2,7 +2,7 @@ let detailsHelper = require('../misc/detailsHelper.js')
 
 module.exports = {
     actions: {
-        spawnPerson(state, { clientId, personId, color, playerPos }, { setter }){
+        spawnPerson(state, { clientId, entityId, color, playerPos }, { setter }){
             return setter.addPerson(state, {
                 startedWalking: 0,
                 walkTime: 0,
@@ -18,7 +18,7 @@ module.exports = {
                 },
                 color,
                 speed: 10,
-                id: personId,
+                id: entityId,
                 clientId
             })
         },
@@ -45,6 +45,18 @@ module.exports = {
             return setter.setPersonDead(state, {
                 key: `${targetClientId}:${targetId}`
             })
+        },
+        personHarvest(state, { clientId, personId, targetId }, { setter }) {
+            return setter.setPersonHarvest(state, {
+                personKey: `${clientId}:${personId}`,
+                targetId: targetId
+            })
+        },
+        personHarvestCorn(state, { clientId, personId, cornId }, { setter }) {
+            return setter.setCornHarvested(state, {
+                personKey: `${clientId}:${personId}`,
+                cornId: cornId
+            })
         }
     },
     setters: {
@@ -69,11 +81,18 @@ module.exports = {
         setPersonAttackTarget(state, { personKey, targetKey }) {
             let person = state.persons[personKey]
             person.targetKey = targetKey
+            person.mode = 'attack'
             return state
         },
         setPersonDead(state, { key }) {
             console.log('Set person dead: ' + key);
             state.persons[key].dead = true
+            return state
+        },
+        setPersonHarvest(state, { personKey, targetId }) {
+            let person = state.persons[personKey]
+            person.targetKey = targetId
+            person.mode = 'farm'
             return state
         }
     },
@@ -98,6 +117,7 @@ module.exports = {
         }
     }
 }
+
 
 function flatten(list) {
     return list.reduce(

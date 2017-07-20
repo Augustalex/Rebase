@@ -1,4 +1,5 @@
 let collisionDetection = require('../misc/collisionDetection.js')
+let newId = require('../misc/newId.js')
 
 module.exports = function (deps) {
     let store = deps.store
@@ -20,7 +21,15 @@ module.exports = function (deps) {
             let cornPositions =
                 forCount(cornCount, () => randPositionInRange(range))
                     .filter(p => !collisionDetection.inBox(p, mill.rect))
-            store.actions.addCorn({ cornPositions, clientId })
+
+            let cornInfos = []
+            cornPositions.forEach(pos => {
+                cornInfos.push({
+                    entityId: newId(),
+                    position: pos
+                })
+            });
+            store.actions.addCorn({ cornInfos, millId: mill.id, clientId })
         }
     }
 

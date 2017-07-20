@@ -1,4 +1,5 @@
 let skinToneGenerator = require('../misc/skinToneGenerator.js')
+let newId = require('../misc/newId.js')
 
 module.exports = function (deps) {
 
@@ -40,9 +41,7 @@ module.exports = function (deps) {
                     action = store.actions.spawnPerson
                     let baseColor = store.selector.getPlayerWithId(clientId).color
                     let skinColor = skinToneGenerator.variationOnBase(baseColor)
-                    console.log('baseVariation', skinColor);
                     data = {
-                        personId: `${Math.round(Math.random() * 100000)}`,
                         color: skinColor
                     }
                     break
@@ -52,6 +51,7 @@ module.exports = function (deps) {
                 action(Object.assign(data, {
                     delta,
                     clientId,
+                    entityId: newId(),
                     playerPos: { x: player.rect.x, y: player.rect.y },
                     playerColor: player.color,
                     playerSpeed: player.speed

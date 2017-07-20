@@ -19,7 +19,8 @@ module.exports = function (deps) {
         localStore,
         keysPressed,
         rand,
-        ctx
+        ctx,
+        drawEntity
     }
 
     let loadedModules = modules.map(c => c(moduleDeps))
@@ -50,5 +51,29 @@ module.exports = function (deps) {
 
     function rand(max) {
         return Math.floor(Math.random() * max)
+    }
+
+    function drawEntity(entity) {
+        let rect = entity.rect
+        let color = entity.color || [255, 0, 0]
+        setColor({
+            r: color[0],
+            g: color[1],
+            b: color[2]
+        })
+        ctx.fillRect(rect.x, rect.y, rect.w, rect.h)
+
+        if (entity.details) {
+            let details = entity.details
+            for (let detail of details) {
+                let color = detail.color
+                setColor({
+                    r: color[0],
+                    g: color[1],
+                    b: color[2]
+                })
+                ctx.fillRect(rect.x + detail.relX, rect.y + detail.relY, detail.w, detail.h)
+            }
+        }
     }
 }
