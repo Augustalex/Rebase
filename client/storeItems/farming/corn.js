@@ -42,7 +42,6 @@ module.exports = {
         },
         setCornHarvested(state, { personKey, cornId }) {
             let corn = getCornByIdOrNull(state, cornId)
-            console.log('setCornHarvested', cornId, corn);
             corn.harvested = true
             return state
         }

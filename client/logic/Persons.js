@@ -42,7 +42,6 @@ module.exports = function (deps) {
             if (person.mode === 'farm') {
                 target = store.selector.getCornById(person.targetKey)
                 action = () => {
-                    console.log('GOT CORN!');
                     store.actions.personHarvestCorn({
                         clientId,
                         personId: person.id,
