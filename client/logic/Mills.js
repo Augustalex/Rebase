@@ -1,7 +1,6 @@
-let skinToneGenerator = require('../misc/skinToneGenerator.js')
+let collisionDetection = require('../misc/collisionDetection.js')
 
 module.exports = function (deps) {
-
     let store = deps.store
     let setColor = deps.setColor
     let keysPressed = deps.keysPressed
@@ -18,7 +17,9 @@ module.exports = function (deps) {
         for (let mill of mills) {
             let cornCount = Math.round(Math.random() * mill.productivity * delta)
             let range = inflate(mill.rect, mill.rangeFactor)
-            let cornPositions = forCount(cornCount, () => randPositionInRange(range))
+            let cornPositions =
+                forCount(cornCount, () => randPositionInRange(range))
+                    .filter(p => !collisionDetection.inBox(p, mill.rect))
             store.actions.addCorn({ cornPositions, clientId })
         }
     }
@@ -64,7 +65,7 @@ module.exports = function (deps) {
 
     function drawEntity(entity) {
         let rect = entity.rect
-        let color = entity.color || [255,0,0]
+        let color = entity.color || [255, 0, 0]
         setColor({
             r: color[0],
             g: color[1],

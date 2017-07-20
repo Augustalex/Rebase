@@ -17,8 +17,8 @@ module.exports = {
                 details: flagDetails,
                 color: [153, 76, 153],
                 clientId,
-                productivity: 100,
-                rangeFactor: 2
+                productivity: 25,
+                rangeFactor: 6
             })
         }
     },
