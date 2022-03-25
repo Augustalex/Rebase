@@ -20,7 +20,7 @@
   "dependencies": {
     "deep-defaults": "^1.0.4",
     "deepmerge": "^1.5.0",
-    "electron": "^1.6.11",
+    "electron": "^13.6.6",
     "express": "^4.15.3",
     "hash-int": "^1.0.0",
     "socket.io": "^2.0.3",
